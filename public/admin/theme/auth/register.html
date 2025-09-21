@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join CapliX</title>
+  <!-- Favicon -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" type="image/png">
+  <!-- Bootstrap & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      background: linear-gradient(to right, #9096f8, #8f94fb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .register-card {
+      max-width: 400px;
+      width: 100%;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .input-group-text {
+      background: #f1f1f1;
+      border: 1px solid #ced4da;
+      color: #495057;
+    }
+    .toggle-password {
+      cursor: pointer;
+      background: #f1f1f1;
+      border: 1px solid #ced4da;
+    }
+    a.text-dark:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-card">
+    <h3 class="text-center mb-3">Join CapliX</h3>
+    <p class="text-center text-muted mb-4">Start your investment journey today</p>
+    <form>
+      <!-- Full Name -->
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+          <input type="text" class="form-control" placeholder="Enter your full name" required>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+          <input type="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-phone"></i></span>
+          <input type="text" class="form-control" placeholder="Enter your phone number" required>
+        </div>
+      </div>
+
+     <!-- Password -->
+<div class="mb-3">
+  <label class="form-label">Password</label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="fas fa-key"></i></span>
+    <input type="password" id="password" class="form-control" placeholder="Create a strong password" required>
+    <span class="input-group-text toggle-password">
+      <i class="fas fa-eye" id="togglePassword"></i>
+    </span>
+  </div>
+</div>
+
+<!-- Confirm Password -->
+<div class="mb-3">
+  <label class="form-label">Confirm Password</label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="fas fa-key"></i></span>
+    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+    <span class="input-group-text toggle-password">
+      <i class="fas fa-eye" id="toggleConfirmPassword"></i>
+    </span>
+  </div>
+</div>
+
+      <!-- Account Type -->
+      <div class="mb-3">
+        <label class="form-label">Account Type</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-user-cog"></i></span>
+          <select class="form-select" required>
+            <option value="">-- Select Account Type --</option>
+            <option>Investor - I want to invest money</option>
+            <option>Entrepreneur - I need capital</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-user-plus me-1"></i> Create Account
+        </button>
+      </div>
+
+      <div class="text-center mt-3">
+        <a href="login.html" class="text-dark">Already have an account? Login</a>
+      </div>
+    </form>
+  </div>
+
+<script>
+  // Password show/hide
+  const togglePassword = document.getElementById('togglePassword');
+  const password = document.getElementById('password');
+  togglePassword.addEventListener('click', () => {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    togglePassword.classList.toggle('fa-eye-slash');
+  });
+
+  // Confirm Password show/hide
+  const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+  const confirmPassword = document.getElementById('confirmPassword');
+  toggleConfirmPassword.addEventListener('click', () => {
+    const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    confirmPassword.setAttribute('type', type);
+    toggleConfirmPassword.classList.toggle('fa-eye-slash');
+  });
+</script>
+</body>
+</html>
