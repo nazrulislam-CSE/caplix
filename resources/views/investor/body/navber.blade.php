@@ -21,7 +21,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
                   <li>
-                      <a class="dropdown-item" href="profile.html">
+                      <a class="dropdown-item" href="{{ route('investor.profile') }}">
                           <i class="fas fa-user me-2"></i> Profile View
                       </a>
                   </li>

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('refer_by')->nullable();
             $table->integer('phone')->nullable();
             $table->string('address')->nullable();
+            $table->string('photo')->nullable();
             $table->string('text')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->string('password');
