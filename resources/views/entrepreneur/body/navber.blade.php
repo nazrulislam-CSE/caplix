@@ -14,15 +14,21 @@
           <div class="ms-auto dropdown">
               <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                   id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                      class="rounded-circle profile-img me-2" alt="Entrepreneur">
-
+                  <img src="{{ Auth::user()->photo
+                      ? asset('upload/entrepreneur/' . Auth::user()->photo)
+                      : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' }}"
+                      class="rounded-circle profile-img me-2" alt="Entrepreneur" width="100">
                   <span class="text-muted fw-bold d-none d-md-inline">{{ Auth::user()->name ?? '' }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
                   <li>
-                      <a class="dropdown-item" href="profile.html">
+                      <a class="dropdown-item" href="{{ route('entrepreneur.profile') }}">
                           <i class="fas fa-user me-2"></i> Profile View
+                      </a>
+                  </li>
+                   <li>
+                      <a class="dropdown-item" href="{{ route('entrepreneur.password.change') }}">
+                          <i class="fas fa-lock me-2"></i> Password Change
                       </a>
                   </li>
                   <li>

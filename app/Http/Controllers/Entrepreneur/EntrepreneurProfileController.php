@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Investor;
+namespace App\Http\Controllers\Entrepreneur;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class InvestorProfileController extends Controller
+class EntrepreneurProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,43 +18,11 @@ class InvestorProfileController extends Controller
         $user = Auth::user(); 
         $pageTitle = 'প্রোফাইল সম্পাদনা';
 
-        return view('investor.profile.edit', compact('user', 'pageTitle'));
+        return view('entrepreneur.profile.edit', compact('user', 'pageTitle'));
     }
 
     /**
      * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
      */
     public function update(Request $request)
     {
@@ -76,11 +44,11 @@ class InvestorProfileController extends Controller
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('upload/investor'), $filename);
+            $file->move(public_path('upload/entrepreneur'), $filename);
 
             // Delete old photo (optional)
-            if ($user->photo && file_exists(public_path('upload/investor/' . $user->photo))) {
-                unlink(public_path('upload/investor/' . $user->photo));
+            if ($user->photo && file_exists(public_path('upload/entrepreneur/' . $user->photo))) {
+                unlink(public_path('upload/entrepreneur/' . $user->photo));
             }
 
             $user->photo = $filename;
@@ -93,7 +61,7 @@ class InvestorProfileController extends Controller
     public function changePasswordForm()
     {
         $pageTitle = 'পাসওয়ার্ড পরিবর্তন';
-        return view('investor.profile.change_password', compact('pageTitle'));
+        return view('entrepreneur.profile.change_password', compact('pageTitle'));
     }
 
     public function updatePassword(Request $request)
@@ -125,6 +93,33 @@ class InvestorProfileController extends Controller
     }
 
 
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
 
     /**
      * Remove the specified resource from storage.

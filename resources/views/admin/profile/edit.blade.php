@@ -1,5 +1,4 @@
-@extends('layouts.investor', [$pageTitle => 'Profile'])
-
+@extends('layouts.admin', [$pageTitle => 'Profile'])
 @section('content')
     <!-- Breadcrumb -->
     <div class="breadcrumb-header d-flex justify-content-between align-items-center mb-4">
@@ -18,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card shadow-lg border-0">
                     <div class="card-body">
-                        <form action="{{ route('investor.profile.update') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
@@ -74,7 +73,7 @@
 
                                 <div class="mt-2">
                                     <img id="photoPreview"
-                                        src="{{ $user->photo ? asset('upload/investor/' . $user->photo) : '' }}"
+                                        src="{{ $user->photo ? asset('upload/admin/' . $user->photo) : '' }}"
                                         width="100">
                                 </div>
                             </div>

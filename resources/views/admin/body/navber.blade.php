@@ -14,14 +14,16 @@
           <div class="ms-auto dropdown">
               <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                   id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                      class="rounded-circle profile-img me-2" alt="Admin">
+                        <img src="{{ Auth::user()->photo
+                      ? asset('upload/admin/' . Auth::user()->photo)
+                      : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' }}"
+                      class="rounded-circle profile-img me-2" alt="Admin" width="100">
 
                   <span class="text-muted fw-bold d-none d-md-inline">{{ Auth::user()->name ?? '' }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
                   <li>
-                      <a class="dropdown-item" href="profile.html">
+                      <a class="dropdown-item" href="{{ route('admin.profile') }}">
                           <i class="fas fa-user me-2"></i> Profile View
                       </a>
                   </li>

@@ -11,6 +11,9 @@ Route::prefix('investor')->name('investor.')->group(function () {
         Route::get('/logout', [InvestorController::class, 'InvestorDestroy'])->name('logout');
         Route::get('/profile', [InvestorProfileController::class, 'index'])->name('profile');
         Route::post('/profile', [InvestorProfileController::class, 'update'])->name('profile.update');
+        Route::get('/password-update', [InvestorProfileController::class, 'changePasswordForm'])->name('password.change');
+        Route::post('/password-update', [InvestorProfileController::class, 'updatePassword'])->name('password.update');
+
     });
 });
 
