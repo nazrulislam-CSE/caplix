@@ -1,3 +1,6 @@
+ @php
+     $currentRoute = Route::currentRouteName();
+ @endphp
  <div class="sidebar" id="sidebar">
      <!-- Close button for mobile -->
      <div class="d-flex justify-content-between align-items-center mb-4 d-md-none">
@@ -13,10 +16,10 @@
      </a>
 
      <!-- Dashboard Overview -->
-        <a href="{{ route('admin.dashboard') }}" 
-        class="d-flex align-items-center mb-2 {{ Route::is('admin.dashboard') ? 'active' : '' }}">
-            <i class="fa-solid fa-house me-2"></i> Dashboard Overview
-        </a>
+     <a href="{{ route('admin.dashboard') }}"
+         class="d-flex align-items-center mb-2 {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+         <i class="fa-solid fa-house me-2"></i> Dashboard Overview
+     </a>
 
 
 
@@ -34,11 +37,21 @@
      </div>
 
      <!-- Projects submenu -->
-     <div class="has-submenu">
+     <div
+         class="has-submenu {{ in_array($currentRoute, ['admin.project.index', 'admin.project.create']) ? 'active' : '' }}">
          <a href="#"><i class="fa-solid fa-briefcase me-2"></i> Projects </a>
          <div class="submenu">
-             <a href="#"><i class="fa-solid fa-list me-2"></i> All Projects</a>
-             <a href="#"><i class="fa-solid fa-plus-circle me-2"></i> Add Project</a>
+             <!-- All Projects -->
+             <a href="{{ route('admin.project.index') }}"
+                 class="{{ $currentRoute == 'admin.projects.index' ? 'active' : '' }}">
+                 <i class="fa-solid fa-list me-2"></i> All Projects
+             </a>
+
+             <!-- Add Project -->
+             <a href="{{ route('admin.project.create') }}"
+                 class="{{ $currentRoute == 'admin.projects.create' ? 'active' : '' }}">
+                 <i class="fa-solid fa-plus-circle me-2"></i> Add Project
+             </a>
          </div>
      </div>
 

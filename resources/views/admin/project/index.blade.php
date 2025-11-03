@@ -1,0 +1,93 @@
+@extends('layouts.admin')
+
+@section('content')
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-header d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">{{ $pageTitle ?? 'Project List' }}</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $pageTitle ?? 'Project List' }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Project List Container -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sl No</th>
+                                    <th>Project Name</th>
+                                    <th>Capital Raised</th>
+                                    <th>Goal</th>
+                                    <th>Status</th>
+                                    <th>Score</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($projects as $project)
+                                    <tr @if ($project->is_red) style="color:red;" @endif>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $project->name }}</td>
+                                        <td>${{ number_format($project->capital_raised, 2) }}</td>
+                                        <td>${{ number_format($project->goal, 2) }}</td>
+                                        <td>
+                                            @if ($project->status === 'Pending')
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            @elseif ($project->status === 'Approved')
+                                                <span class="badge bg-success">Approved</span>
+                                            @elseif ($project->status === 'Issued')
+                                                <span class="badge bg-primary">Issued</span>
+                                            @elseif ($project->status === 'At Risk')
+                                                <span class="badge bg-danger">At Risk</span>
+                                            @else
+                                                <span class="badge bg-secondary">{{ $project->status }}</span>
+                                            @endif
+                                        </td>
+
+                                        <td>{{ $project->score }}</td>
+                                        <td>
+                                            <!-- Show/View Icon -->
+                                            <a href="{{ route('admin.project.show', $project->id) }}"
+                                                class="btn btn-sm btn-info" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+
+                                            <!-- Edit Icon -->
+                                            <a href="{{ route('admin.project.edit', $project->id) }}"
+                                                class="btn btn-sm btn-primary" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+
+                                            <!-- Delete Icon -->
+                                            <form action="{{ route('admin.project.destroy', $project->id) }}"
+                                                method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Are you sure?')" title="Delete">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No projects found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
