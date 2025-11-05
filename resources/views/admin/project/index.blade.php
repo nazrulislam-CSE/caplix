@@ -55,7 +55,7 @@
                                         <td>
                                             <!-- Show/View Icon -->
                                             <a href="{{ route('admin.project.show', $project->id) }}"
-                                                class="btn btn-sm btn-info" title="View">
+                                                class="btn btn-sm btn-info text-light" title="View">
                                                 <i class="fas fa-eye"></i>
                                             </a>
 

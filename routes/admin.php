@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProfileController;
-use App\Http\Controllers\Admin\Porject\ProjectController;
+use App\Http\Controllers\Admin\Project\ProjectController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
