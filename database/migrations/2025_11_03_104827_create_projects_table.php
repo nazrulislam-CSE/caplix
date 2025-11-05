@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Project name
-            $table->text('description')->nullable(); // Project description
-            $table->decimal('capital_raised', 15, 2)->default(0); // Capital raised
-            $table->decimal('goal', 15, 2)->default(0); // Goal amount
+            $table->string('name'); // Project Title
+            $table->string('investment_type')->nullable(); // e.g., Equity, Loan, etc.
+            $table->decimal('roi', 5, 2)->nullable(); // Approximate ROI %
+            $table->text('description')->nullable(); // Project Description
+            $table->decimal('capital_required', 15, 2)->default(0); // Capital Goal
+            $table->decimal('capital_raised', 15, 2)->default(0); // Raised so far
             $table->enum('status', ['Pending', 'Approved', 'Issued', 'At Risk'])->default('Pending');
-            $table->boolean('has_complaint')->default(false); // Complaint flag
-            $table->integer('score')->default(100); // Project score (will be reduced on complaints)
-            $table->unsignedBigInteger('entrepreneur_id')->nullable(); // Relationship to user (if needed)
+            $table->string('pitch_deck')->nullable(); // Uploaded PDF
+            $table->boolean('has_complaint')->default(false);
+            $table->integer('score')->default(100);
+            $table->unsignedBigInteger('entrepreneur_id')->nullable();
             $table->timestamps();
 
         });
