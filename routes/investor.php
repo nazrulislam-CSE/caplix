@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\Investor\InvestorProfileController;
+use App\Http\Controllers\Investor\Project\ProjectController;
+use App\Http\Controllers\Investor\Investment\InvestmentController;
 
 Route::prefix('investor')->name('investor.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -13,6 +15,22 @@ Route::prefix('investor')->name('investor.')->group(function () {
         Route::post('/profile', [InvestorProfileController::class, 'update'])->name('profile.update');
         Route::get('/password-update', [InvestorProfileController::class, 'changePasswordForm'])->name('password.change');
         Route::post('/password-update', [InvestorProfileController::class, 'updatePassword'])->name('password.update');
+
+        // ✅ Project Routes
+        Route::prefix('projects')->name('project.')->group(function () {
+            Route::get('/project/{project}', [ProjectController::class, 'show'])->name('show');
+            Route::get('/analysis', [ProjectController::class, 'analysis'])->name('analysis');
+        });
+
+        // ✅ Investment Routes
+        Route::prefix('investments')->name('investment.')->group(function () {
+            Route::get('/', [InvestmentController::class, 'index'])->name('index');
+            Route::get('/create', [InvestmentController::class, 'create'])->name('create');
+            Route::post('/', [InvestmentController::class, 'store'])->name('store');
+            Route::post('/{investment}/add', [InvestmentController::class, 'addMoreInvestment'])->name('add.more');
+            Route::get('/{investment}', [InvestmentController::class, 'show'])->name('show');
+        });
+
 
     });
 });

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use App\Models\Project;
 
 class AdminController extends Controller
 {
@@ -15,7 +18,6 @@ class AdminController extends Controller
         if (auth()->guard('web')->check() && auth()->guard('web')->user()->role === 'admin') {
             return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
         }
-
         return view('auth.admin_login'); // Show login form if not logged in as admin
     }
 
@@ -59,7 +61,15 @@ class AdminController extends Controller
     public function AdminDashboard(){
 
         $pageTitle = 'Admin Dashboard';
-        return view('admin.dashboard',compact('pageTitle'));
+
+        // Check if the public/storage symlink exists
+        if (!File::exists(public_path('storage'))) {
+            // Create the symlink
+            app('files')->link(storage_path('app/public'), public_path('storage'));
+        }
+
+        $projects = Project::latest()->paginate(10); 
+        return view('admin.dashboard',compact('pageTitle','projects'));
     }
 
     public function AdminDestroy(Request $request){

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.entrepreneur')
 
 @section('content')
     <!-- Breadcrumb -->
@@ -6,8 +6,8 @@
         <h4 class="mb-0">{{ $pageTitle ?? 'Edit Project' }}</h4>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('entrepreneur.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('entrepreneur.project.index') }}">Projects</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Edit Project</li>
             </ol>
         </nav>
@@ -20,13 +20,13 @@
                 <div class="card shadow border-0">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Edit Project</h5>
-                        <a href="{{ route('admin.project.index') }}" class="btn btn-light btn-sm">
+                        <a href="{{ route('entrepreneur.project.index') }}" class="btn btn-light btn-sm">
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('admin.project.update', $project->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('entrepreneur.project.update', $project->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -111,22 +111,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            {{-- Status --}}
-                            <div class="mb-3">
-                                <label for="status" class="form-label">Status</label>
-                                <select name="status" id="status"
-                                    class="form-select @error('status') is-invalid @enderror" required>
-                                    <option value="Pending" {{ old('status', $project->status) == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="Approved" {{ old('status', $project->status) == 'Approved' ? 'selected' : '' }}>Approved</option>
-                                    <option value="Issued" {{ old('status', $project->status) == 'Issued' ? 'selected' : '' }}>Issued</option>
-                                    <option value="At Risk" {{ old('status', $project->status) == 'At Risk' ? 'selected' : '' }}>At Risk</option>
-                                </select>
-                                @error('status')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
+                            
                             {{-- Pitch Deck Upload --}}
                             <div class="mb-4">
                                 <label for="pitch_deck" class="form-label">Upload Pitch Deck & Portfolio (PDF)</label>
@@ -142,7 +127,7 @@
 
                             {{-- Submit Button --}}
                             <div class="text-end mt-4">
-                                <a href="{{ route('admin.project.index') }}" class="btn btn-secondary">Cancel</a>
+                                <a href="{{ route('entrepreneur.project.index') }}" class="btn btn-secondary">Cancel</a>
                                 <button type="submit" class="btn btn-primary">Update Project</button>
                             </div>
 

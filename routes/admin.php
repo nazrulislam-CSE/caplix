@@ -21,7 +21,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('projects')->name('project.')->group(function () {
             Route::get('/', [ProjectController::class, 'index'])->name('index');
             Route::get('/create', [ProjectController::class, 'create'])->name('create');
-            Route::get('/show/{id}', [ProjectController::class, 'show'])->name('show');
+            Route::get('/project/{project}', [ProjectController::class, 'show'])->name('show');
             Route::post('/store', [ProjectController::class, 'store'])->name('store');
             Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/{project}', [ProjectController::class, 'update'])->name('update');

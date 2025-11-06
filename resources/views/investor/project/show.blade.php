@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.investor')
 
 @section('content')
     <!-- Breadcrumb -->
@@ -6,8 +6,7 @@
         <h4 class="mb-0">{{ $pageTitle ?? 'Project Details' }}</h4>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('investor.dashboard') }}">Dashboard</a></li>
                 <li class="breadcrumb-item active" aria-current="page">View Project</li>
             </ol>
         </nav>
@@ -20,9 +19,6 @@
                 <div class="card shadow border-0">
                     <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">{{ $project->name }}</h5>
-                        <a href="{{ route('admin.project.index') }}" class="btn btn-light btn-sm">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </a>
                     </div>
 
                     <div class="card-body">
@@ -31,6 +27,10 @@
                                 <tr>
                                     <th>Project Name</th>
                                     <td>{{ $project->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Project Entrepreneur</th>
+                                    <td>{{ $project->entrepreneur->name ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Investment Type</th>
@@ -88,10 +88,7 @@
                         </table>
 
                         <div class="text-end mt-3">
-                            <a href="{{ route('admin.project.edit', $project->id) }}" class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit Project
-                            </a>
-                            <a href="{{ route('admin.project.index') }}" class="btn btn-secondary">Back to List</a>
+                            <a href="{{ route('investor.dashboard') }}" class="btn btn-secondary">Back</a>
                         </div>
                     </div>
                 </div>

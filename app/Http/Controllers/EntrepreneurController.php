@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Project;
 
 class EntrepreneurController extends Controller
 {
     public function EntrepreneurDashboard(){
 
         $pageTitle = 'Entrepreneur Dashboard';
-        return view('entrepreneur.dashboard',compact('pageTitle'));
+        $projects = Project::where('entrepreneur_id', Auth::id())->latest()->paginate(10); 
+        return view('entrepreneur.dashboard',compact('pageTitle','projects'));
     }
 
     public function EntrepreneurDestroy(Request $request){

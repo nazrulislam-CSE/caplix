@@ -121,27 +121,47 @@
                     <table class="table table-hover mt-3">
                         <thead>
                             <tr>
-                                <th>Entrepreneur</th>
                                 <th>Project</th>
                                 <th>Capital</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Fatima Rahman</td>
-                                <td>Green Energy Co.</td>
-                                <td>৳8,00,000</td>
-                                <td><button class="btn btn-primary btn-sm">Review</button></td>
-                            </tr>
-                            <tr>
-                                <td>Kamal Hossain</td>
-                                <td>Rajshahi AgroTech</td>
-                                <td>৳3,50,000</td>
-                                <td><button class="btn btn-primary btn-sm">Review</button></td>
-                            </tr>
+                            @forelse($projects as $project)
+                                <tr>
+                                    <td>{{ $project->name }}</td>
+                                    <td>৳{{ number_format($project->capital_required, 2) }}</td>
+                                    <td>
+                                        @if ($project->status === 'Pending')
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @elseif($project->status === 'Approved')
+                                            <span class="badge bg-success">Approved</span>
+                                        @elseif($project->status === 'Issued')
+                                            <span class="badge bg-primary">Issued</span>
+                                        @elseif($project->status === 'At Risk')
+                                            <span class="badge bg-danger">At Risk</span>
+                                        @else
+                                            <span class="badge bg-secondary">{{ $project->status }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.project.show', $project->id) }}"
+                                            class="btn btn-primary btn-sm">View</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">No projects found.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
+
+                    {{-- Pagination --}}
+                    <div class="mt-3">
+                        {{ $projects->links() }}
+                    </div>
                 </div>
             </div>
         </div>

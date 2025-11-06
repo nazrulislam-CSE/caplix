@@ -1,3 +1,8 @@
+  @php
+    $currentRoute = Route::currentRouteName();
+    // Check if current route is under project.*
+    $projectMenuOpen = Route::is('entrepreneur.project.*') ? 'active open' : '';
+ @endphp
  <div class="sidebar" id="sidebar">
      <!-- Close button for mobile -->
      <div class="d-flex justify-content-between align-items-center mb-4 d-md-none">
@@ -30,6 +35,26 @@
          <div class="submenu">
              <a href="allinvestor.html"><i class="fa-solid fa-list me-2"></i> All Entrepreneur</a>
              <a href="addinvestor.html"><i class="fa-solid fa-user-plus me-2"></i> Add Entrepreneur</a>
+         </div>
+     </div>
+
+     <!-- Projects submenu -->
+    
+
+     <div class="has-submenu {{ $projectMenuOpen }}">
+         <a href="#"><i class="fa-solid fa-briefcase me-2"></i> Projects </a>
+         <div class="submenu" style="{{ Route::is('entrepreneur.project.*') ? 'display:block;' : '' }}">
+             <!-- All Projects -->
+             <a href="{{ route('entrepreneur.project.index') }}"
+                 class="{{ Route::is('entrepreneur.project.index') ? 'active' : '' }}">
+                 <i class="fa-solid fa-list me-2"></i> All Projects
+             </a>
+
+             <!-- Add Project -->
+             <a href="{{ route('entrepreneur.project.create') }}"
+                 class="{{ Route::is('entrepreneur.project.create') ? 'active' : '' }}">
+                 <i class="fa-solid fa-plus-circle me-2"></i> Add Project
+             </a>
          </div>
      </div>
      

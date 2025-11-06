@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.entrepreneur')
 
 @section('content')
     <!-- Breadcrumb -->
@@ -19,7 +19,7 @@
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Project List</h5>
-                        <a href="{{ route('admin.project.create') }}" class="btn btn-light btn-sm">
+                        <a href="{{ route('entrepreneur.project.create') }}" class="btn btn-light btn-sm">
                             <i class="fas fa-plus"></i> Add New Project
                         </a>
                     </div>
@@ -36,7 +36,7 @@
                                         <th>Investors</th>
                                         <th>Complaints</th>
                                         <th>Created By</th>
-                                        <th>Actions</th>
+                                        {{-- <th>Actions</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,18 +62,18 @@
                                             <td>{{ $project->investors_count ?? 0 }}</td>
                                             <td>{{ $project->complaints_count ?? 0 }}</td>
                                             <td>{{ $project->entrepreneur->name ?? '' }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.project.show', $project->id) }}"
+                                            {{-- <td>
+                                                <a href="{{ route('entrepreneur.project.show', $project->id) }}"
                                                     class="btn btn-sm btn-info text-light" title="View">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.project.edit', $project->id) }}"
+                                                <a href="{{ route('entrepreneur.project.edit', $project->id) }}"
                                                     class="btn btn-sm btn-primary" title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
 
-                                                <form action="{{ route('admin.project.destroy', $project->id) }}"
+                                                <form action="{{ route('entrepreneur.project.destroy', $project->id) }}"
                                                     method="POST" style="display:inline-block;">
                                                     @csrf
                                                     @method('DELETE')
@@ -82,7 +82,7 @@
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </form>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @empty
                                         <tr>

@@ -1,5 +1,7 @@
  @php
-     $currentRoute = Route::currentRouteName();
+    $currentRoute = Route::currentRouteName();
+    // Check if current route is under project.*
+    $projectMenuOpen = Route::is('admin.project.*') ? 'active open' : '';
  @endphp
  <div class="sidebar" id="sidebar">
      <!-- Close button for mobile -->
@@ -37,23 +39,26 @@
      </div>
 
      <!-- Projects submenu -->
-     <div
-         class="has-submenu {{ in_array($currentRoute, ['admin.project.index', 'admin.project.create']) ? 'active' : '' }}">
+    
+
+     <div class="has-submenu {{ $projectMenuOpen }}">
          <a href="#"><i class="fa-solid fa-briefcase me-2"></i> Projects </a>
-         <div class="submenu">
+         <div class="submenu" style="{{ Route::is('admin.project.*') ? 'display:block;' : '' }}">
              <!-- All Projects -->
              <a href="{{ route('admin.project.index') }}"
-                 class="{{ $currentRoute == 'admin.projects.index' ? 'active' : '' }}">
+                 class="{{ Route::is('admin.project.index') ? 'active' : '' }}">
                  <i class="fa-solid fa-list me-2"></i> All Projects
              </a>
 
              <!-- Add Project -->
              <a href="{{ route('admin.project.create') }}"
-                 class="{{ $currentRoute == 'admin.projects.create' ? 'active' : '' }}">
+                 class="{{ Route::is('admin.project.create') ? 'active' : '' }}">
                  <i class="fa-solid fa-plus-circle me-2"></i> Add Project
              </a>
          </div>
      </div>
+
+
 
      <!-- Remaining menu items (placeholders) -->
      <a href="#"><i class="fa-solid fa-coins me-2"></i> Withdrawal Requests</a>

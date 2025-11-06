@@ -13,17 +13,19 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Project Title
-            $table->string('investment_type')->nullable(); // e.g., Equity, Loan, etc.
-            $table->decimal('roi', 5, 2)->nullable(); // Approximate ROI %
-            $table->text('description')->nullable(); // Project Description
-            $table->decimal('capital_required', 15, 2)->default(0); // Capital Goal
-            $table->decimal('capital_raised', 15, 2)->default(0); // Raised so far
+            $table->string('name'); // Project title
+            $table->enum('investment_type', ['short', 'regular', 'fdi'])->nullable();
+            $table->tinyInteger('short_duration')->nullable(); // Duration in months (for short-term)
+            $table->decimal('roi', 5, 2)->nullable(); // ROI %
+            $table->text('description')->nullable();
+            $table->decimal('capital_required', 15, 2)->nullable();
+            $table->string('pitch_deck')->nullable(); // File path
             $table->enum('status', ['Pending', 'Approved', 'Issued', 'At Risk'])->default('Pending');
-            $table->string('pitch_deck')->nullable(); // Uploaded PDF
-            $table->boolean('has_complaint')->default(false);
-            $table->integer('score')->default(100);
+            $table->decimal('capital_raised', 15, 2)->default(0);
+            $table->decimal('score', 5, 2)->default(0);
+            $table->boolean('is_red')->default(false); // For your table row styling
             $table->unsignedBigInteger('entrepreneur_id')->nullable();
+            $table->boolean('has_complaint')->default(false);
             $table->timestamps();
 
         });

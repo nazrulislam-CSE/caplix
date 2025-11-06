@@ -16,15 +16,20 @@
     <!-- Project Form -->
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-md-12">
                 <div class="card shadow border-0">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">Submit New Project for Funding</h5>
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Add New Project</h5>
+                        <a href="{{ route('admin.project.index') }}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
                     </div>
+
                     <div class="card-body">
                         <p class="mb-4">
                             <i class="bi bi-info-circle text-primary"></i>
-                            <strong>Requirement:</strong> An Entrepreneur must have an investment to submit a project. This ensures commitment.
+                            <strong>Requirement:</strong> An Entrepreneur must have an investment to submit a project. This
+                            ensures commitment.
                         </p>
 
                         <form action="{{ route('admin.project.store') }}" method="POST" enctype="multipart/form-data">
@@ -32,8 +37,10 @@
 
                             {{-- Project Title --}}
                             <div class="mb-3">
-                                <label for="name" class="form-label">Project Title <span class="text-danger">*</span></label>
-                                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
+                                <label for="name" class="form-label">Project Title <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" name="name" id="name"
+                                    class="form-control @error('name') is-invalid @enderror"
                                     placeholder="e.g., Eco Weavers Ltd." value="{{ old('name') }}" required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -46,21 +53,37 @@
                                 <select name="investment_type" id="investment_type"
                                     class="form-select @error('investment_type') is-invalid @enderror">
                                     <option value="">-- Select Type --</option>
-                                    <option value="Equity" {{ old('investment_type') == 'Equity' ? 'selected' : '' }}>Equity</option>
-                                    <option value="Loan" {{ old('investment_type') == 'Loan' ? 'selected' : '' }}>Loan</option>
-                                    <option value="Partnership" {{ old('investment_type') == 'Partnership' ? 'selected' : '' }}>Partnership</option>
+                                    <option value="short" {{ old('investment_type') == 'short' ? 'selected' : '' }}>Short
+                                        Term Investment</option>
+                                    <option value="regular" {{ old('investment_type') == 'regular' ? 'selected' : '' }}>
+                                        Regular Investment</option>
+                                    <option value="fdi" {{ old('investment_type') == 'fdi' ? 'selected' : '' }}>Fixed
+                                        Deposit Investment (FDI)</option>
                                 </select>
                                 @error('investment_type')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- Duration (hidden by default) --}}
+                            <div class="mb-3" id="short_duration_div" style="display: none;">
+                                <label for="short_duration" class="form-label">Duration (Months)</label>
+                                <select name="short_duration" id="short_duration" class="form-select">
+                                    <option value="">-- Select Duration --</option>
+                                    @for ($i = 2; $i <= 8; $i++)
+                                        <option value="{{ $i }}"
+                                            {{ old('short_duration') == $i ? 'selected' : '' }}>{{ $i }}
+                                            Month{{ $i > 1 ? 's' : '' }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+
                             {{-- Approximate ROI --}}
                             <div class="mb-3">
                                 <label for="roi" class="form-label">Approximate ROI %</label>
                                 <input type="number" name="roi" id="roi" step="0.01"
-                                    class="form-control @error('roi') is-invalid @enderror"
-                                    placeholder="e.g., 15" value="{{ old('roi') }}">
+                                    class="form-control @error('roi') is-invalid @enderror" placeholder="e.g., 15"
+                                    value="{{ old('roi') }}">
                                 @error('roi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -70,8 +93,7 @@
                             <div class="mb-3">
                                 <label for="description" class="form-label">Project Description</label>
                                 <textarea name="description" id="description" rows="4"
-                                    class="form-control @error('description') is-invalid @enderror"
-                                    placeholder="Describe your business idea...">{{ old('description') }}</textarea>
+                                    class="form-control @error('description') is-invalid @enderror" placeholder="Describe your business idea...">{{ old('description') }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -99,8 +121,10 @@
                             </div>
 
                             <p class="small text-muted">
-                                After submission, your project will be reviewed by our admin team. If approved, you will earn badges like
-                                <strong>'Verified Project'</strong>, a <strong>'Trust Score'</strong>, and a <strong>'Risk Level'</strong> assessment.
+                                After submission, your project will be reviewed by our admin team. If approved, you will
+                                earn badges like
+                                <strong>'Verified Project'</strong>, a <strong>'Trust Score'</strong>, and a <strong>'Risk
+                                    Level'</strong> assessment.
                             </p>
 
                             {{-- Submit Button --}}
@@ -115,4 +139,24 @@
             </div>
         </div>
     </div>
+    <script>
+        const investmentType = document.getElementById('investment_type');
+        const shortDurationDiv = document.getElementById('short_duration_div');
+
+        // Show/hide duration select based on investment type
+        investmentType.addEventListener('change', function() {
+            if (this.value === 'short') {
+                shortDurationDiv.style.display = 'block';
+            } else {
+                shortDurationDiv.style.display = 'none';
+            }
+        });
+
+        // Show the duration if old value exists (on validation error)
+        window.addEventListener('DOMContentLoaded', function() {
+            if (investmentType.value === 'short') {
+                shortDurationDiv.style.display = 'block';
+            }
+        });
+    </script>
 @endsection

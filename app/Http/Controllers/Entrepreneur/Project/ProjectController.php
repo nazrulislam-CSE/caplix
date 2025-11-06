@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Project;
+namespace App\Http\Controllers\Entrepreneur\Project;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,8 +16,8 @@ class ProjectController extends Controller
     public function index()
     {
         $pageTitle = 'Project List';
-        $projects = Project::latest()->paginate(10); 
-        return view('admin.project.index', compact('pageTitle', 'projects'));
+        $projects = Project::where('entrepreneur_id', Auth::id())->latest()->paginate(10); 
+        return view('entrepreneur.project.index', compact('pageTitle', 'projects'));
     }
 
     /**
@@ -26,7 +26,7 @@ class ProjectController extends Controller
     public function create()
     {
         $pageTitle = 'Add New Project';
-        return view('admin.project.create', compact('pageTitle'));
+        return view('entrepreneur.project.create', compact('pageTitle'));
     }
 
     /**
@@ -61,7 +61,7 @@ class ProjectController extends Controller
             // Create project
             Project::create($validated);
 
-            return redirect()->route('admin.project.index')
+            return redirect()->route('entrepreneur.project.index')
                 ->with('success', '✅ Project submitted successfully for review!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -85,7 +85,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $pageTitle = 'Project Details';
-        return view('admin.project.show', compact('project', 'pageTitle'));
+        return view('entrepreneur.project.show', compact('project', 'pageTitle'));
     }
 
     /**
@@ -94,7 +94,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $pageTitle = 'Edit Project';
-        return view('admin.project.edit', compact('project', 'pageTitle'));
+        return view('entrepreneur.project.edit', compact('project', 'pageTitle'));
     }
 
     /**
@@ -134,7 +134,7 @@ class ProjectController extends Controller
         $validated['score'] = $project->score; // Preserve updated score if complaint
         $project->update($validated);
 
-        return redirect()->route('admin.project.index')
+        return redirect()->route('entrepreneur.project.index')
             ->with('success', '✅ Project updated successfully!');
     }
 
@@ -149,7 +149,7 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->route('admin.project.index')
+        return redirect()->route('entrepreneur.project.index')
             ->with('success', '🗑️ Project deleted successfully!');
     }
 }
