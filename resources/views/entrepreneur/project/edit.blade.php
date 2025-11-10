@@ -100,17 +100,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            {{-- Capital Required --}}
-                            <div class="mb-3">
-                                <label for="capital_required" class="form-label">Capital Required (৳)</label>
-                                <input type="number" name="capital_required" id="capital_required" step="0.01"
-                                    class="form-control @error('capital_required') is-invalid @enderror"
-                                    placeholder="e.g., 500000" value="{{ old('capital_required', $project->capital_required) }}">
-                                @error('capital_required')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
                             
                             {{-- Pitch Deck Upload --}}
                             <div class="mb-4">
