@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Project;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,7 +27,8 @@ class ProjectController extends Controller
     public function create()
     {
         $pageTitle = 'Add New Project';
-        return view('admin.project.create', compact('pageTitle'));
+        $entrepreneurs = User::where('role','entrepreneur')->latest()->get();
+        return view('admin.project.create', compact('pageTitle','entrepreneurs'));
     }
 
     /**
@@ -42,6 +44,7 @@ class ProjectController extends Controller
                 'short_duration' => 'nullable|integer|min:2|max:8',
                 'roi' => 'nullable|numeric|min:0|max:100',
                 'description' => 'nullable|string',
+                'entrepreneur_id' => 'nullable',
                 'capital_required' => 'nullable|numeric|min:0',
                 'pitch_deck' => 'nullable|mimes:pdf|max:5120',
             ]);
@@ -56,7 +59,10 @@ class ProjectController extends Controller
             $validated['status'] = 'Pending';
             $validated['score'] = 100;
             $validated['has_complaint'] = false;
-            $validated['entrepreneur_id'] = Auth::id();
+
+            $validated['entrepreneur_id'] = $validated['entrepreneur_id'] ?? Auth::id();
+
+
 
             // Create project
             Project::create($validated);
@@ -94,7 +100,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $pageTitle = 'Edit Project';
-        return view('admin.project.edit', compact('project', 'pageTitle'));
+        $entrepreneurs = User::where('role','entrepreneur')->latest()->get();
+        return view('admin.project.edit', compact('project', 'pageTitle','entrepreneurs'));
     }
 
     /**
@@ -108,6 +115,7 @@ class ProjectController extends Controller
             'short_duration' => 'nullable|integer|min:2|max:8',
             'roi' => 'nullable|numeric|min:0|max:100',
             'description' => 'nullable|string',
+            'entrepreneur_id' => 'nullable',
             'capital_required' => 'nullable|numeric|min:0',
             'capital_raised' => 'nullable|numeric|min:0',
             'status' => 'required|in:Pending,Approved,Issued,At Risk',
@@ -132,6 +140,7 @@ class ProjectController extends Controller
         }
 
         $validated['score'] = $project->score; // Preserve updated score if complaint
+        $validated['entrepreneur_id'] = $validated['entrepreneur_id'] ?? Auth::id();
         $project->update($validated);
 
         return redirect()->route('admin.project.index')

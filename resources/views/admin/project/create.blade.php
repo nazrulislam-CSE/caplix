@@ -110,11 +110,32 @@
                                 @enderror
                             </div>
 
+                            {{-- Entrepreneur Select --}}
+                            <div class="mb-3">
+                                <label for="entrepreneur_id" class="form-label">Select Entrepreneur <span
+                                        class="text-danger">*</span></label>
+                                <select name="entrepreneur_id" id="entrepreneur_id"
+                                    class="form-control @error('entrepreneur_id') is-invalid @enderror">
+                                    <option value="">-- Select Entrepreneur --</option>
+                                    @foreach ($entrepreneurs as $entrepreneur)
+                                        <option value="{{ $entrepreneur->id }}"
+                                            {{ old('entrepreneur_id') == $entrepreneur->id ? 'selected' : '' }}>
+                                            {{ $entrepreneur->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('entrepreneur_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
                             {{-- Pitch Deck Upload --}}
                             <div class="mb-4">
                                 <label for="pitch_deck" class="form-label">Upload Pitch Deck & Portfolio (PDF)</label>
                                 <input type="file" name="pitch_deck" id="pitch_deck"
-                                    class="form-control @error('pitch_deck') is-invalid @enderror" accept="application/pdf">
+                                    class="form-control @error('pitch_deck') is-invalid @enderror"
+                                    accept="application/pdf">
                                 @error('pitch_deck')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

@@ -26,13 +26,15 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('admin.project.update', $project->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.project.update', $project->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
                             {{-- Project Title --}}
                             <div class="mb-3">
-                                <label for="name" class="form-label">Project Title <span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">Project Title <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror"
                                     placeholder="e.g., Eco Weavers Ltd." value="{{ old('name', $project->name) }}" required>
@@ -47,9 +49,15 @@
                                 <select name="investment_type" id="investment_type"
                                     class="form-select @error('investment_type') is-invalid @enderror">
                                     <option value="">-- Select Type --</option>
-                                    <option value="short" {{ old('investment_type', $project->investment_type) == 'short' ? 'selected' : '' }}>Short Term Investment</option>
-                                    <option value="regular" {{ old('investment_type', $project->investment_type) == 'regular' ? 'selected' : '' }}>Regular Investment</option>
-                                    <option value="fdi" {{ old('investment_type', $project->investment_type) == 'fdi' ? 'selected' : '' }}>Fixed Deposit Investment (FDI)</option>
+                                    <option value="short"
+                                        {{ old('investment_type', $project->investment_type) == 'short' ? 'selected' : '' }}>
+                                        Short Term Investment</option>
+                                    <option value="regular"
+                                        {{ old('investment_type', $project->investment_type) == 'regular' ? 'selected' : '' }}>
+                                        Regular Investment</option>
+                                    <option value="fdi"
+                                        {{ old('investment_type', $project->investment_type) == 'fdi' ? 'selected' : '' }}>
+                                        Fixed Deposit Investment (FDI)</option>
                                 </select>
                                 @error('investment_type')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -63,7 +71,8 @@
                                     <option value="">-- Select Duration --</option>
                                     @for ($i = 2; $i <= 8; $i++)
                                         <option value="{{ $i }}"
-                                            {{ old('short_duration', $project->short_duration) == $i ? 'selected' : '' }}>{{ $i }} Month{{ $i > 1 ? 's' : '' }}</option>
+                                            {{ old('short_duration', $project->short_duration) == $i ? 'selected' : '' }}>
+                                            {{ $i }} Month{{ $i > 1 ? 's' : '' }}</option>
                                     @endfor
                                 </select>
                             </div>
@@ -83,8 +92,7 @@
                             <div class="mb-3">
                                 <label for="description" class="form-label">Project Description</label>
                                 <textarea name="description" id="description" rows="4"
-                                    class="form-control @error('description') is-invalid @enderror"
-                                    placeholder="Describe your business idea...">{{ old('description', $project->description) }}</textarea>
+                                    class="form-control @error('description') is-invalid @enderror" placeholder="Describe your business idea...">{{ old('description', $project->description) }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -95,7 +103,8 @@
                                 <label for="capital_required" class="form-label">Capital Required (৳)</label>
                                 <input type="number" name="capital_required" id="capital_required" step="0.01"
                                     class="form-control @error('capital_required') is-invalid @enderror"
-                                    placeholder="e.g., 500000" value="{{ old('capital_required', $project->capital_required) }}">
+                                    placeholder="e.g., 500000"
+                                    value="{{ old('capital_required', $project->capital_required) }}">
                                 @error('capital_required')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -106,21 +115,55 @@
                                 <label for="capital_required" class="form-label">Capital Required (৳)</label>
                                 <input type="number" name="capital_required" id="capital_required" step="0.01"
                                     class="form-control @error('capital_required') is-invalid @enderror"
-                                    placeholder="e.g., 500000" value="{{ old('capital_required', $project->capital_required) }}">
+                                    placeholder="e.g., 500000"
+                                    value="{{ old('capital_required', $project->capital_required) }}">
                                 @error('capital_required')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            {{-- Entrepreneur Select --}}
+                            <div class="mb-3">
+                                <label for="entrepreneur_id" class="form-label">
+                                    Select Entrepreneur
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <select name="entrepreneur_id" id="entrepreneur_id"
+                                    class="form-select @error('entrepreneur_id') is-invalid @enderror">
+                                    <option value="" disabled {{ old('entrepreneur_id') ? '' : 'selected' }}>
+                                        -- Select Entrepreneur --
+                                    </option>
+                                    @foreach ($entrepreneurs as $entrepreneur)
+                                        <option value="{{ $entrepreneur->id }}"
+                                            {{ old('entrepreneur_id') == $entrepreneur->id ? 'selected' : '' }}>
+                                            {{ $entrepreneur->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('entrepreneur_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
 
                             {{-- Status --}}
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status"
                                     class="form-select @error('status') is-invalid @enderror" required>
-                                    <option value="Pending" {{ old('status', $project->status) == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="Approved" {{ old('status', $project->status) == 'Approved' ? 'selected' : '' }}>Approved</option>
-                                    <option value="Issued" {{ old('status', $project->status) == 'Issued' ? 'selected' : '' }}>Issued</option>
-                                    <option value="At Risk" {{ old('status', $project->status) == 'At Risk' ? 'selected' : '' }}>At Risk</option>
+                                    <option value="Pending"
+                                        {{ old('status', $project->status) == 'Pending' ? 'selected' : '' }}>Pending
+                                    </option>
+                                    <option value="Approved"
+                                        {{ old('status', $project->status) == 'Approved' ? 'selected' : '' }}>Approved
+                                    </option>
+                                    <option value="Issued"
+                                        {{ old('status', $project->status) == 'Issued' ? 'selected' : '' }}>Issued</option>
+                                    <option value="At Risk"
+                                        {{ old('status', $project->status) == 'At Risk' ? 'selected' : '' }}>At Risk
+                                    </option>
                                 </select>
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -131,9 +174,12 @@
                             <div class="mb-4">
                                 <label for="pitch_deck" class="form-label">Upload Pitch Deck & Portfolio (PDF)</label>
                                 <input type="file" name="pitch_deck" id="pitch_deck"
-                                    class="form-control @error('pitch_deck') is-invalid @enderror" accept="application/pdf">
-                                @if($project->pitch_deck)
-                                    <small class="text-muted">Current File: <a href="{{ asset('storage/' . $project->pitch_deck) }}" target="_blank">View</a></small>
+                                    class="form-control @error('pitch_deck') is-invalid @enderror"
+                                    accept="application/pdf">
+                                @if ($project->pitch_deck)
+                                    <small class="text-muted">Current File: <a
+                                            href="{{ asset('storage/' . $project->pitch_deck) }}"
+                                            target="_blank">View</a></small>
                                 @endif
                                 @error('pitch_deck')
                                     <div class="invalid-feedback">{{ $message }}</div>
