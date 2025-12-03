@@ -16,7 +16,7 @@
     <!-- Total Invested -->
     <div class="col-6 col-md-4 col-lg-2">
         <div class="stat-card">
-            <h5 class="text-primary">${{ number_format($totalInvested) }}</h5>
+            <h5 class="text-primary">৳{{ number_format($totalInvested) }}</h5>
             <small>Total Invested</small>
             <div class="mt-2 text-primary">
                 <i class="fas fa-money-bill-wave"></i>
@@ -39,7 +39,7 @@
     <div class="col-6 col-md-4 col-lg-2">
         <div class="stat-card">
             <h5 class="text-info {{ $monthlyProfit >= 0 ? 'text-success' : 'text-danger' }}">
-                ${{ number_format(abs($monthlyProfit)) }}
+                ৳{{ number_format(abs($monthlyProfit)) }}
             </h5>
             <small>30-Day {{ $monthlyProfit >= 0 ? 'Profit' : 'Loss' }}</small>
             <div class="mt-2 {{ $monthlyProfit >= 0 ? 'text-success' : 'text-danger' }}">
@@ -87,7 +87,7 @@
     <!-- Portfolio Value -->
     <div class="col-6 col-md-4 col-lg-3">
         <div class="stat-card bg-light">
-            <h5 class="text-dark">${{ number_format($currentValue) }}</h5>
+            <h5 class="text-dark">৳{{ number_format($currentValue) }}</h5>
             <small>Portfolio Value</small>
             <div class="mt-2 text-dark">
                 <i class="fas fa-wallet"></i>
@@ -99,7 +99,7 @@
     <div class="col-6 col-md-4 col-lg-3">
         <div class="stat-card bg-light">
             <h5 class="{{ $totalProfitLoss >= 0 ? 'text-success' : 'text-danger' }}">
-                ${{ number_format(abs($totalProfitLoss)) }}
+                ৳{{ number_format(abs($totalProfitLoss)) }}
             </h5>
             <small>Total {{ $totalProfitLoss >= 0 ? 'Profit' : 'Loss' }}</small>
             <div class="mt-2 {{ $totalProfitLoss >= 0 ? 'text-success' : 'text-danger' }}">
@@ -166,7 +166,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>${{ number_format($investment->investment_amount) }}</td>
+                                        <td>৳{{ number_format($investment->investment_amount) }}</td>
                                         <td>{{ $investment->investment_date->format('M d') }}</td>
                                         <td>
                                             <span class="badge bg-{{ $investment->status == 'active' ? 'success' : 'info' }}">
@@ -237,7 +237,7 @@
                                             <small class="text-muted">{{ number_format($project->funding_percentage, 1) }}%</small>
                                         </td>
                                         <td>
-                                            <a href="{{ route('investor.investment.create', ['project_id' => $project->id]) }}" 
+                                            <a href="{{ route('investor.investment.index') }}" 
                                                class="btn btn-primary btn-sm">
                                                 Invest
                                             </a>

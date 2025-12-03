@@ -58,10 +58,10 @@
                                                     <span class="badge bg-secondary">{{ $project->status }}</span>
                                                 @endif
                                             </td>
-                                            <td>${{ number_format($project->capital_required, 2) }}</td>
+                                            <td>৳{{ number_format($project->capital_required, 2) }}</td>
                                             <td>{{ $project->investors_count ?? 0 }}</td>
                                             <td>{{ $project->complaints_count ?? 0 }}</td>
-                                            <td>{{ $project->entrepreneur->name ?? '' }}</td>
+                                            <td>{{ $project->user->name ?? '' }}</td>
                                             {{-- <td>
                                                 <a href="{{ route('entrepreneur.project.show', $project->id) }}"
                                                     class="btn btn-sm btn-info text-light" title="View">

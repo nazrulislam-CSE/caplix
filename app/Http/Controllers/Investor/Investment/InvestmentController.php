@@ -24,15 +24,24 @@ class InvestmentController extends Controller
             ->where('user_id', Auth::id())
             ->latest()
             ->get();
+          
 
         // Get available projects for new investment
+        // $availableProjects = Project::approved()
+        //     ->whereDoesntHave('investments', function ($query) {
+        //         $query->where('user_id', Auth::id())
+        //               ->whereIn('status', ['active', 'managed']);
+        //     })
+        //     ->whereRaw('capital_raised < capital_required') // Only projects that need funding
+        //     ->get();
+
         $availableProjects = Project::approved()
             ->whereDoesntHave('investments', function ($query) {
-                $query->where('user_id', Auth::id())
-                      ->whereIn('status', ['active', 'managed']);
+                $query->whereIn('status', ['active', 'managed']); // Auth::id() remove
             })
             ->whereRaw('capital_raised < capital_required') // Only projects that need funding
             ->get();
+
 
         return view('investor.investment.index', compact(
             'pageTitle', 

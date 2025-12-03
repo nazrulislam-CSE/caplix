@@ -73,6 +73,14 @@
                                     <td>{{ $project->description ?? '-' }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Entrepreneur</th>
+                                    <td>{{ $project->entrepreneur->name ?? '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created By</th>
+                                    <td>{{ $project->user->name ?? '-' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Pitch Deck</th>
                                     <td>
                                         @if($project->pitch_deck)

@@ -41,6 +41,10 @@
                                     <td>{{ $project->short_duration ?? '-' }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Duration (Years)</th>
+                                    <td>{{ $project->regular_duration ?? '-' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Approx. ROI (%)</th>
                                     <td>{{ $project->roi ?? '-' }}</td>
                                 </tr>
@@ -71,6 +75,14 @@
                                 <tr>
                                     <th>Description</th>
                                     <td>{{ $project->description ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Entrepreneur</th>
+                                    <td>{{ $project->entrepreneur->name ?? '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created By</th>
+                                    <td>{{ $project->user->name ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Pitch Deck</th>

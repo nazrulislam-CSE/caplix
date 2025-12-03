@@ -26,6 +26,12 @@ class Project extends Model
         return $this->hasMany(Investment::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+
     /**
      * Scope for approved projects
      */

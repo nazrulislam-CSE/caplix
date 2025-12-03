@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\Kyc\kycController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -26,6 +27,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
             Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
+        });
+
+        // ✅ Kyc Routes
+        Route::prefix('kyc')->name('kyc.')->group(function () {
+            Route::get('/', [KycController::class, 'index'])->name('index');
+            Route::get('/{kyc}/details', [KycController::class, 'details'])->name('details');
+            Route::get('/{kyc}', [KycController::class, 'show'])->name('show');
+            Route::get('/{kyc}/edit', [KycController::class, 'edit'])->name('edit');
+            Route::put('/{kyc}', [KycController::class, 'update'])->name('update');
+            Route::put('/{kyc}/status', [KycController::class, 'updateStatus'])->name('status.update');
+            Route::delete('/{kyc}', [KycController::class, 'destroy'])->name('destroy');
+            Route::get('/{kyc}/{documentType}', [KycController::class, 'downloadDocument'])->name('download');
+            Route::get('/export', [KycController::class, 'export'])->name('export');
         });
        
     });

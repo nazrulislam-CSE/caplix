@@ -31,7 +31,7 @@
 
        <!-- Investment submenu -->
        {{-- In your layout file --}}
-
+       <a href="#"><i class="fa-solid fa-shield-halved me-2"></i> KYC Verification</a>
        <!-- Investment submenu -->
        <div class="has-submenu {{ $investmentMenuOpen }}">
            <a href="#"><i class="fa-solid fa-briefcase me-2"></i> Investments </a>
@@ -48,7 +48,6 @@
 
        <!-- Remaining menu items (placeholders) -->
        <a href="#"><i class="fa-solid fa-coins me-2"></i> Withdrawal Requests</a>
-       <a href="#"><i class="fa-solid fa-shield-halved me-2"></i> KYC Verification</a>
        <a href="#"><i class="fa-solid fa-file-lines me-2"></i> Reports & Audit</a>
        <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
        <a href="#"><i class="fa-solid fa-credit-card me-2"></i> Payments</a>

@@ -92,6 +92,7 @@
             @endforeach
         @endif
     </script>
+    @stack('js')
 </body>
 
 </html>

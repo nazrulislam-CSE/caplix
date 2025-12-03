@@ -15,6 +15,34 @@
 
     <!-- Dashboard Stats -->
     <div class="row g-3 mb-4">
+        <!-- KYC Status Alert -->
+        @if (!$isKycVerified)
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-3 fa-2x"></i>
+                    <div>
+                        <h5 class="alert-heading mb-1">KYC Verification Required</h5>
+                        <p class="mb-0">
+                            Please complete your KYC verification to access all features including project creation.
+                            @if ($kyc)
+                                Current Status: <strong>{{ ucfirst($kyc->status) }}</strong>
+                            @endif
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    @if (!$kyc)
+                        <a href="{{ route('entrepreneur.kyc.create') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-user-check me-1"></i> Start KYC Verification
+                        </a>
+                    @else
+                        <a href="{{ route('entrepreneur.kyc.status') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-info-circle me-1"></i> Check KYC Status
+                        </a>
+                    @endif
+                </div>
+            </div>
+        @endif
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
                 <h5 class="text-primary">125</h5>
@@ -62,8 +90,15 @@
         </div>
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
-                <h5 class="text-danger">12</h5>
-                <small>KYC Pending</small>
+                <small>
+                    @if ($isKycVerified)
+                        <span class="badge bg-success">Verified</span>
+                    @elseif($kyc)
+                        <span class="badge bg-warning">{{ ucfirst($kyc->status) }}</span>
+                    @else
+                        <span class="badge bg-danger">Pending</span>
+                    @endif
+                </small>
                 <div class="mt-2 text-danger">
                     <i class="fas fa-user-clock"></i>
                 </div>

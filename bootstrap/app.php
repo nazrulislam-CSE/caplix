@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'check.bk.token' => \App\Http\Middleware\CheckBkToken::class,
             'HandleCors' => \App\Http\Middleware\CorsMiddleware::class,
+            'kyc.verified' => \App\Http\Middleware\CheckKycVerified::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

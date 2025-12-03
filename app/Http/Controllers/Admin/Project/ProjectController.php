@@ -41,10 +41,11 @@ class ProjectController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'investment_type' => 'nullable|in:short,regular,fdi',
-                'short_duration' => 'nullable|integer|min:2|max:8',
+                'short_duration' => 'nullable|integer|min:1|max:8',
+                'regular_duration' => 'nullable|integer|min:1|max:20',
                 'roi' => 'nullable|numeric|min:0|max:100',
                 'description' => 'nullable|string',
-                'entrepreneur_id' => 'nullable',
+                'entrepreneur_id' => 'required',
                 'capital_required' => 'nullable|numeric|min:0',
                 'pitch_deck' => 'nullable|mimes:pdf|max:5120',
             ]);
@@ -62,7 +63,7 @@ class ProjectController extends Controller
 
             $validated['entrepreneur_id'] = $validated['entrepreneur_id'] ?? Auth::id();
 
-
+            $validated['created_by'] = Auth::id();
 
             // Create project
             Project::create($validated);
@@ -112,10 +113,11 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'investment_type' => 'nullable|in:short,regular,fdi',
-            'short_duration' => 'nullable|integer|min:2|max:8',
+            'short_duration' => 'nullable|integer|min:1|max:8',
+            'regular_duration' => 'nullable|integer|min:1|max:20',
             'roi' => 'nullable|numeric|min:0|max:100',
             'description' => 'nullable|string',
-            'entrepreneur_id' => 'nullable',
+            'entrepreneur_id' => 'required',
             'capital_required' => 'nullable|numeric|min:0',
             'capital_raised' => 'nullable|numeric|min:0',
             'status' => 'required|in:Pending,Approved,Issued,At Risk',
@@ -141,6 +143,7 @@ class ProjectController extends Controller
 
         $validated['score'] = $project->score; // Preserve updated score if complaint
         $validated['entrepreneur_id'] = $validated['entrepreneur_id'] ?? Auth::id();
+        $validated['updated_by'] = Auth::id();
         $project->update($validated);
 
         return redirect()->route('admin.project.index')

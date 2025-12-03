@@ -78,6 +78,19 @@
                                 </select>
                             </div>
 
+                            {{-- Duration for Regular Investment (hidden by default) --}}
+                            <div class="mb-3" id="regular_duration_div" style="display: none;">
+                                <label for="regular_duration" class="form-label">Duration (Years)</label>
+                                <select name="regular_duration" id="regular_duration" class="form-select">
+                                    <option value="">-- Select Duration --</option>
+                                    @for ($i = 1; $i <= 20; $i++)
+                                        <option value="{{ $i }}" {{ old('regular_duration') == $i ? 'selected' : '' }}>
+                                            {{ $i }} Year{{ $i > 1 ? 's' : '' }}
+                                        </option>
+                                    @endfor
+                                </select>
+                            </div>
+
                             {{-- Approximate ROI --}}
                             <div class="mb-3">
                                 <label for="roi" class="form-label">Approximate ROI %</label>
@@ -139,23 +152,34 @@
             </div>
         </div>
     </div>
-    <script>
+     <script>
         const investmentType = document.getElementById('investment_type');
         const shortDurationDiv = document.getElementById('short_duration_div');
+        const regularDurationDiv = document.getElementById('regular_duration_div');
 
-        // Show/hide duration select based on investment type
         investmentType.addEventListener('change', function() {
             if (this.value === 'short') {
                 shortDurationDiv.style.display = 'block';
-            } else {
+                regularDurationDiv.style.display = 'none';
+            } 
+            else if (this.value === 'regular') {
+                regularDurationDiv.style.display = 'block';
                 shortDurationDiv.style.display = 'none';
+            }
+            else {
+                // hide all if none selected
+                shortDurationDiv.style.display = 'none';
+                regularDurationDiv.style.display = 'none';
             }
         });
 
-        // Show the duration if old value exists (on validation error)
+        // On page load (for validation errors)
         window.addEventListener('DOMContentLoaded', function() {
             if (investmentType.value === 'short') {
                 shortDurationDiv.style.display = 'block';
+            }
+            if (investmentType.value === 'regular') {
+                regularDurationDiv.style.display = 'block';
             }
         });
     </script>

@@ -77,12 +77,12 @@
                                         class="text-dark">${{ number_format($investment->investment_amount, 2) }}</strong>
                                 </td>
                                 <td>
-                                    <strong class="text-dark">${{ number_format($investment->current_value, 2) }}</strong>
+                                    <strong class="text-dark">৳{{ number_format($investment->current_value, 2) }}</strong>
                                 </td>
                                 <td>
                                     <span
                                         class="fw-bold {{ $investment->profit_loss >= 0 ? 'text-success' : 'text-danger' }}">
-                                        {{ $investment->profit_loss >= 0 ? '+' : '' }}${{ number_format($investment->profit_loss, 2) }}
+                                        {{ $investment->profit_loss >= 0 ? '+' : '' }}৳{{ number_format($investment->profit_loss, 2) }}
                                         ({{ $investment->profit_loss >= 0 ? '+' : '' }}{{ number_format($investment->profit_loss_percentage, 2) }}%)
                                     </span>
                                 </td>
@@ -149,7 +149,7 @@
                                                     <small>
                                                         <i class="fa-solid fa-info-circle me-1 text-primary"></i>
                                                         Current Investment:
-                                                        <strong>${{ number_format($investment->investment_amount, 2) }}</strong>
+                                                        <strong>৳{{ number_format($investment->investment_amount, 2) }}</strong>
                                                     </small>
                                                 </div>
                                             </div>
@@ -159,6 +159,174 @@
                                                 <button type="submit" class="btn btn-primary">Confirm Investment</button>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- View Investment Details Modal -->
+                            <div class="modal fade" id="viewInvestmentModal{{ $investment->id }}" tabindex="-1"
+                                aria-labelledby="viewInvestmentModalLabel{{ $investment->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary text-white">
+                                            <h5 class="modal-title" id="viewInvestmentModalLabel{{ $investment->id }}">
+                                                <i class="fa-solid fa-chart-line me-2"></i>
+                                                Investment Details - {{ $investment->project->name }}
+                                            </h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <!-- Project Information -->
+                                                <div class="col-md-6">
+                                                    <div class="card border-0 shadow-sm mb-4">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0"><i class="fa-solid fa-building me-2"></i>Project Information</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-borderless table-sm">
+                                                                <tr>
+                                                                    <td class="text-muted" width="40%">Project Name:</td>
+                                                                    <td class="fw-bold">{{ $investment->project->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Investment Type:</td>
+                                                                    <td>
+                                                                        <span class="badge bg-primary">
+                                                                            {{ ucfirst($investment->type) }}
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Risk Level:</td>
+                                                                    <td>
+                                                                        <span
+                                                                            class="badge bg-{{ $investment->risk_level == 'low' ? 'success' : ($investment->risk_level == 'medium' ? 'warning' : 'danger') }}">
+                                                                            {{ ucfirst($investment->risk_level) }} Risk
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Project ROI:</td>
+                                                                    <td class="fw-bold text-success">{{ $investment->project->roi }}%</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Project Status:</td>
+                                                                    <td>
+                                                                        <span class="badge bg-{{ $investment->project->status_color }}">
+                                                                            {{ $investment->project->status }}
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Investment Performance -->
+                                                <div class="col-md-6">
+                                                    <div class="card border-0 shadow-sm mb-4">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0"><i class="fa-solid fa-chart-bar me-2"></i>Investment Performance
+                                                            </h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-borderless table-sm">
+                                                                <tr>
+                                                                    <td class="text-muted" width="40%">Initial Investment:</td>
+                                                                    <td class="fw-bold">${{ number_format($investment->investment_amount, 2) }}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Current Value:</td>
+                                                                    <td class="fw-bold">${{ number_format($investment->current_value, 2) }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Profit/Loss:</td>
+                                                                    <td
+                                                                        class="fw-bold {{ $investment->profit_loss >= 0 ? 'text-success' : 'text-danger' }}">
+                                                                        {{ $investment->profit_loss >= 0 ? '+' : '' }}${{ number_format($investment->profit_loss, 2) }}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Return Percentage:</td>
+                                                                    <td
+                                                                        class="fw-bold {{ $investment->profit_loss_percentage >= 0 ? 'text-success' : 'text-danger' }}">
+                                                                        {{ $investment->profit_loss_percentage >= 0 ? '+' : '' }}{{ number_format($investment->profit_loss_percentage, 2) }}%
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-muted">Investment Date:</td>
+                                                                    <td class="fw-bold">{{ $investment->investment_date->format('M d, Y') }}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Project Description -->
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card border-0 shadow-sm">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0"><i class="fa-solid fa-file-lines me-2"></i>Project Description</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <p class="mb-0">
+                                                                {{ $investment->project->description ?? 'No description available for this project.' }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Investment Timeline -->
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <div class="card border-0 shadow-sm">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0"><i class="fa-solid fa-clock-rotate-left me-2"></i>Investment
+                                                                Timeline</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="timeline">
+                                                                <div class="timeline-item">
+                                                                    <div class="timeline-marker bg-success"></div>
+                                                                    <div class="timeline-content">
+                                                                        <h6 class="mb-1">Investment Started</h6>
+                                                                        <p class="text-muted mb-0">
+                                                                            {{ $investment->investment_date->format('F d, Y') }}</p>
+                                                                        <small>Initial investment of
+                                                                            ${{ number_format($investment->investment_amount, 2) }}</small>
+                                                                    </div>
+                                                                </div>
+                                                                @if ($investment->maturity_date)
+                                                                    <div class="timeline-item">
+                                                                        <div class="timeline-marker bg-info"></div>
+                                                                        <div class="timeline-content">
+                                                                            <h6 class="mb-1">Expected Maturity</h6>
+                                                                            <p class="text-muted mb-0">
+                                                                                {{ $investment->maturity_date->format('F d, Y') }}</p>
+                                                                            <small>Projected completion date</small>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            @if ($investment->status == 'active')
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                    data-bs-target="#investMoreModal{{ $investment->id }}" data-bs-dismiss="modal">
+                                                    <i class="fa-solid fa-plus me-1"></i>Invest More
+                                                </button>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -183,174 +351,7 @@
             </div>
         </div>
     </div>
-    <!-- View Investment Details Modal -->
-    <div class="modal fade" id="viewInvestmentModal{{ $investment->id }}" tabindex="-1"
-        aria-labelledby="viewInvestmentModalLabel{{ $investment->id }}" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="viewInvestmentModalLabel{{ $investment->id }}">
-                        <i class="fa-solid fa-chart-line me-2"></i>
-                        Investment Details - {{ $investment->project->name }}
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <!-- Project Information -->
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0"><i class="fa-solid fa-building me-2"></i>Project Information</h6>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-borderless table-sm">
-                                        <tr>
-                                            <td class="text-muted" width="40%">Project Name:</td>
-                                            <td class="fw-bold">{{ $investment->project->name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Investment Type:</td>
-                                            <td>
-                                                <span class="badge bg-primary">
-                                                    {{ ucfirst($investment->type) }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Risk Level:</td>
-                                            <td>
-                                                <span
-                                                    class="badge bg-{{ $investment->risk_level == 'low' ? 'success' : ($investment->risk_level == 'medium' ? 'warning' : 'danger') }}">
-                                                    {{ ucfirst($investment->risk_level) }} Risk
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Project ROI:</td>
-                                            <td class="fw-bold text-success">{{ $investment->project->roi }}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Project Status:</td>
-                                            <td>
-                                                <span class="badge bg-{{ $investment->project->status_color }}">
-                                                    {{ $investment->project->status }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Investment Performance -->
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0"><i class="fa-solid fa-chart-bar me-2"></i>Investment Performance
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-borderless table-sm">
-                                        <tr>
-                                            <td class="text-muted" width="40%">Initial Investment:</td>
-                                            <td class="fw-bold">${{ number_format($investment->investment_amount, 2) }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Current Value:</td>
-                                            <td class="fw-bold">${{ number_format($investment->current_value, 2) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Profit/Loss:</td>
-                                            <td
-                                                class="fw-bold {{ $investment->profit_loss >= 0 ? 'text-success' : 'text-danger' }}">
-                                                {{ $investment->profit_loss >= 0 ? '+' : '' }}${{ number_format($investment->profit_loss, 2) }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Return Percentage:</td>
-                                            <td
-                                                class="fw-bold {{ $investment->profit_loss_percentage >= 0 ? 'text-success' : 'text-danger' }}">
-                                                {{ $investment->profit_loss_percentage >= 0 ? '+' : '' }}{{ number_format($investment->profit_loss_percentage, 2) }}%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Investment Date:</td>
-                                            <td class="fw-bold">{{ $investment->investment_date->format('M d, Y') }}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project Description -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0"><i class="fa-solid fa-file-lines me-2"></i>Project Description</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-0">
-                                        {{ $investment->project->description ?? 'No description available for this project.' }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Investment Timeline -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0"><i class="fa-solid fa-clock-rotate-left me-2"></i>Investment
-                                        Timeline</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="timeline">
-                                        <div class="timeline-item">
-                                            <div class="timeline-marker bg-success"></div>
-                                            <div class="timeline-content">
-                                                <h6 class="mb-1">Investment Started</h6>
-                                                <p class="text-muted mb-0">
-                                                    {{ $investment->investment_date->format('F d, Y') }}</p>
-                                                <small>Initial investment of
-                                                    ${{ number_format($investment->investment_amount, 2) }}</small>
-                                            </div>
-                                        </div>
-                                        @if ($investment->maturity_date)
-                                            <div class="timeline-item">
-                                                <div class="timeline-marker bg-info"></div>
-                                                <div class="timeline-content">
-                                                    <h6 class="mb-1">Expected Maturity</h6>
-                                                    <p class="text-muted mb-0">
-                                                        {{ $investment->maturity_date->format('F d, Y') }}</p>
-                                                    <small>Projected completion date</small>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    @if ($investment->status == 'active')
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#investMoreModal{{ $investment->id }}" data-bs-dismiss="modal">
-                            <i class="fa-solid fa-plus me-1"></i>Invest More
-                        </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- New Investment Modal (Keep your existing one) -->
     <div class="modal fade" id="newInvestmentModal" tabindex="-1" aria-labelledby="newInvestmentModalLabel"
         aria-hidden="true">
@@ -363,7 +364,7 @@
                 <form action="{{ route('investor.investment.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <div class="mb-3">
+                       <div class="mb-3">
                             <label for="project_id" class="form-label">Select Project</label>
                             <select class="form-select" id="project_id" name="project_id" required>
                                 <option value="">Choose a project...</option>
@@ -372,7 +373,8 @@
                                         data-min-investment="{{ $project->min_investment }}"
                                         data-max-investment="{{ $project->max_investment }}"
                                         data-risk="{{ $project->risk_level }}"
-                                        data-return="{{ $project->expected_return }}">
+                                        data-return="{{ $project->expected_return }}"
+                                        data-investment-type="{{ $project->investment_type }}">
                                         {{ $project->name }} -
                                         {{ ucfirst($project->type) }} |
                                         {{ ucfirst($project->risk_level) }} Risk |
@@ -383,10 +385,10 @@
                             <div class="form-text">Choose from available investment projects</div>
                         </div>
                         <div class="mb-3">
-                            <label for="investment_amount" class="form-label">Investment Amount ($)</label>
+                            <label for="investment_amount" class="form-label">Investment Amount (৳)</label>
                             <input type="number" class="form-control" id="investment_amount" name="investment_amount"
                                 min="1000" step="100" required placeholder="e.g., 25000">
-                            <div class="form-text" id="amountHelp">Minimum investment: $1,000</div>
+                            <div class="form-text" id="amountHelp">Minimum investment: ৳1,000</div>
                         </div>
                         <div class="mb-3">
                             <label for="type" class="form-label">Investment Type</label>
@@ -478,6 +480,69 @@
 @endpush
 
 @push('js')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const projectSelect = document.getElementById('project_id');
+    const typeSelect = document.getElementById('type');
+    
+    // Map database values to form values
+    const investmentTypeMap = {
+        'short': 'short-term',
+        'regular': 'regular',
+        'fdi': 'fixed-deposit'
+        // Add 'long-term' if needed in database
+    };
+    
+    projectSelect.addEventListener('change', function() {
+        if (this.value === '') {
+            // Reset to all options if no project selected
+            resetTypeDropdown();
+            return;
+        }
+        
+        const selectedOption = this.options[this.selectedIndex];
+        const projectInvestmentType = selectedOption.getAttribute('data-investment-type');
+        
+        // Map database value to form value
+        const formInvestmentType = investmentTypeMap[projectInvestmentType] || projectInvestmentType;
+        
+        // Update the type dropdown
+        updateTypeDropdown(formInvestmentType);
+    });
+    
+    function updateTypeDropdown(allowedType) {
+        // Disable all options first
+        Array.from(typeSelect.options).forEach(option => {
+            option.disabled = false;
+            option.hidden = false;
+        });
+        
+        // Enable only the matching option
+        Array.from(typeSelect.options).forEach(option => {
+            if (option.value !== allowedType && option.value !== '') {
+                option.disabled = true;
+                option.hidden = true;
+            }
+        });
+        
+        // Set the selected value
+        typeSelect.value = allowedType;
+    }
+    
+    function resetTypeDropdown() {
+        Array.from(typeSelect.options).forEach(option => {
+            option.disabled = false;
+            option.hidden = false;
+        });
+        typeSelect.value = 'short-term'; // Default value
+    }
+    
+    // Initialize on page load if a project is already selected
+    if (projectSelect.value !== '') {
+        projectSelect.dispatchEvent(new Event('change'));
+    }
+});
+</script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const projectSelect = document.getElementById('project_id');
@@ -492,10 +557,10 @@
 
                     if (minAmount) {
                         amountInput.min = minAmount;
-                        let helpText = `Minimum investment: $${parseInt(minAmount).toLocaleString()}`;
+                        let helpText = `Minimum investment: ৳${parseInt(minAmount).toLocaleString()}`;
 
                         if (maxAmount) {
-                            helpText += ` | Maximum investment: $${parseInt(maxAmount).toLocaleString()}`;
+                            helpText += ` | Maximum investment: ৳${parseInt(maxAmount).toLocaleString()}`;
                         }
 
                         amountHelp.textContent = helpText;

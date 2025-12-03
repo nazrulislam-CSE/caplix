@@ -29,18 +29,9 @@
      <!-- One menu after Dashboard -->
      <a href="{{ route('entrepreneur.dashboard') }}"><i class="fa-solid fa-chart-simple me-2"></i> Overview Details</a>
 
-     <!-- Investor submenu -->
-     <div class="has-submenu">
-         <a href="#"><i class="fa-solid fa-users me-2"></i> Entrepreneur</a>
-         <div class="submenu">
-             <a href="allinvestor.html"><i class="fa-solid fa-list me-2"></i> All Entrepreneur</a>
-             <a href="addinvestor.html"><i class="fa-solid fa-user-plus me-2"></i> Add Entrepreneur</a>
-         </div>
-     </div>
-
-     <!-- Projects submenu -->
     
-
+    <a href="{{ route('entrepreneur.kyc.create') }}"><i class="fa-solid fa-shield-halved me-2"></i> KYC Verification</a>
+    <!-- Projects submenu -->
      <div class="has-submenu {{ $projectMenuOpen }}">
          <a href="#"><i class="fa-solid fa-briefcase me-2"></i> Projects </a>
          <div class="submenu" style="{{ Route::is('entrepreneur.project.*') ? 'display:block;' : '' }}">
@@ -60,7 +51,6 @@
      
      <!-- Remaining menu items (placeholders) -->
      <a href="#"><i class="fa-solid fa-coins me-2"></i> Withdrawal Requests</a>
-     <a href="#"><i class="fa-solid fa-shield-halved me-2"></i> KYC Verification</a>
      <a href="#"><i class="fa-solid fa-file-lines me-2"></i> Reports & Audit</a>
      <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
      <a href="#"><i class="fa-solid fa-credit-card me-2"></i> Payments</a>

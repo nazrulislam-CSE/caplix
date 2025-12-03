@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Entrepreneur\Project;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\BusinessKyc;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +16,15 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $kyc = BusinessKyc::where('user_id', $user->id)->first();
+        
+        if (!$kyc || $kyc->status !== 'verified') {
+            return redirect()->route('entrepreneur.kyc.create')
+                ->with('error', 'Please complete KYC verification to create projects.');
+        }
+        
+
         $pageTitle = 'Project List';
         $projects = Project::where('entrepreneur_id', Auth::id())->latest()->paginate(10); 
         return view('entrepreneur.project.index', compact('pageTitle', 'projects'));
@@ -25,6 +35,15 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        $kyc = BusinessKyc::where('user_id', $user->id)->first();
+        
+        if (!$kyc || $kyc->status !== 'verified') {
+            return redirect()->route('entrepreneur.kyc.create')
+                ->with('error', 'Please complete KYC verification to create projects.');
+        }
+        
+
         $pageTitle = 'Add New Project';
         return view('entrepreneur.project.create', compact('pageTitle'));
     }
@@ -39,7 +58,8 @@ class ProjectController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'investment_type' => 'nullable|in:short,regular,fdi',
-                'short_duration' => 'nullable|integer|min:2|max:8',
+                'short_duration' => 'nullable|integer|min:1|max:8',
+                'regular_duration' => 'nullable|integer|min:1|max:20',
                 'roi' => 'nullable|numeric|min:0|max:100',
                 'description' => 'nullable|string',
                 'capital_required' => 'nullable|numeric|min:0',
@@ -57,6 +77,8 @@ class ProjectController extends Controller
             $validated['score'] = 100;
             $validated['has_complaint'] = false;
             $validated['entrepreneur_id'] = Auth::id();
+
+            $validated['created_by'] = Auth::id();
 
             // Create project
             Project::create($validated);
@@ -105,7 +127,8 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'investment_type' => 'nullable|in:short,regular,fdi',
-            'short_duration' => 'nullable|integer|min:2|max:8',
+            'short_duration' => 'nullable|integer|min:1|max:8',
+            'regular_duration' => 'nullable|integer|min:1|max:20',
             'roi' => 'nullable|numeric|min:0|max:100',
             'description' => 'nullable|string',
             'capital_required' => 'nullable|numeric|min:0',
@@ -132,6 +155,7 @@ class ProjectController extends Controller
         }
 
         $validated['score'] = $project->score; // Preserve updated score if complaint
+        $validated['updated_by'] = Auth::id();
         $project->update($validated);
 
         return redirect()->route('entrepreneur.project.index')

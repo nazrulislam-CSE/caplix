@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name'); // Project title
             $table->enum('investment_type', ['short', 'regular', 'fdi'])->nullable();
             $table->tinyInteger('short_duration')->nullable(); // Duration in months (for short-term)
+            $table->tinyInteger('regular_duration')->nullable(); // Duration in years (for short-term)
             $table->decimal('roi', 5, 2)->nullable(); // ROI %
             $table->text('description')->nullable();
             $table->decimal('capital_required', 15, 2)->nullable();
@@ -26,6 +27,8 @@ return new class extends Migration
             $table->boolean('is_red')->default(false); // For your table row styling
             $table->unsignedBigInteger('entrepreneur_id')->nullable();
             $table->boolean('has_complaint')->default(false);
+            $table->string('created_by')->nullable(); 
+            $table->string('updated_by')->nullable(); 
             $table->timestamps();
 
         });

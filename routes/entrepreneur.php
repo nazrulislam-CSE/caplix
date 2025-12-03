@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EntrepreneurController;
 use App\Http\Controllers\Entrepreneur\EntrepreneurProfileController;
+use App\Http\Controllers\Entrepreneur\Kyc\kycController;
 use App\Http\Controllers\Entrepreneur\Project\ProjectController;
 
 Route::prefix('entrepreneur')->name('entrepreneur.')->group(function () {
@@ -24,6 +25,19 @@ Route::prefix('entrepreneur')->name('entrepreneur.')->group(function () {
             Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
             Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
+        });
+
+        // ✅ Kyc Routes
+        Route::prefix('kyc')->name('kyc.')->group(function () {
+            Route::get('/', [kycController::class, 'index'])->name('index');
+            Route::get('/create', [kycController::class, 'create'])->name('create');
+            Route::get('/kyc/{id}', [kycController::class, 'show'])->name('show');
+            Route::post('/store', [kycController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [kycController::class, 'edit'])->name('edit');
+            Route::put('/update/{id}', [kycController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [kycController::class, 'destroy'])->name('destroy');
+            Route::post('/send-otp', [KycController::class, 'sendOtp'])->name('send-otp');
+            Route::get('/status', [KycController::class, 'status'])->name('status');
         });
     });
 });
