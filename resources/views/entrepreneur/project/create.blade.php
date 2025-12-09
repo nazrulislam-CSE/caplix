@@ -152,7 +152,7 @@
             </div>
         </div>
     </div>
-     <script>
+    <script>
         const investmentType = document.getElementById('investment_type');
         const shortDurationDiv = document.getElementById('short_duration_div');
         const regularDurationDiv = document.getElementById('regular_duration_div');
@@ -162,7 +162,7 @@
                 shortDurationDiv.style.display = 'block';
                 regularDurationDiv.style.display = 'none';
             } 
-            else if (this.value === 'regular') {
+            else if (this.value === 'fdi') {
                 regularDurationDiv.style.display = 'block';
                 shortDurationDiv.style.display = 'none';
             }

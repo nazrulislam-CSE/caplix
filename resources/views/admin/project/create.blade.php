@@ -195,7 +195,7 @@
                 shortDurationDiv.style.display = 'block';
                 regularDurationDiv.style.display = 'none';
             } 
-            else if (this.value === 'regular') {
+            else if (this.value === 'fdi') {
                 regularDurationDiv.style.display = 'block';
                 shortDurationDiv.style.display = 'none';
             }
