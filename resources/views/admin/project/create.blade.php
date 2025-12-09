@@ -144,6 +144,17 @@
                             </div>
 
 
+                            {{-- Project Url --}}
+                            <div class="mb-3">
+                                <label for="url" class="form-label">Project URL</label>
+                                <input type="text" name="url" id="url" class="form-control @error('url') is-invalid @enderror"
+                                    placeholder="Enter project url" value="{{ old('url') }}">
+                                @error('url')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
                             {{-- Pitch Deck Upload --}}
                             <div class="mb-4">
                                 <label for="pitch_deck" class="form-label">Upload Pitch Deck & Portfolio (PDF)</label>

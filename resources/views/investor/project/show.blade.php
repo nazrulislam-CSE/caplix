@@ -77,6 +77,14 @@
                                     <td>{{ $project->entrepreneur->name ?? '' }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Project Link</th>
+                                    <td>
+                                        <a href="{{ $project->url }}" target="_blank" class="btn btn-success"> 
+                                            {{ $project->url }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Created By</th>
                                     <td>{{ $project->user->name ?? '-' }}</td>
                                 </tr>

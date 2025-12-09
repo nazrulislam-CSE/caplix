@@ -148,6 +148,16 @@
                                 @enderror
                             </div>
 
+                            {{-- Project Url --}}
+                            <div class="mb-3">
+                                <label for="url" class="form-label">Project URL</label>
+                                <input type="text" name="url" id="url" class="form-control @error('url') is-invalid @enderror"
+                                    placeholder="Enter project url" value="{{ old('url',$project->url) }}">
+                                @error('url')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
 
 
                             {{-- Status --}}

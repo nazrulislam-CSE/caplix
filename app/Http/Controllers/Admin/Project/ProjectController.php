@@ -48,6 +48,7 @@ class ProjectController extends Controller
                 'entrepreneur_id' => 'required',
                 'capital_required' => 'nullable|numeric|min:0',
                 'pitch_deck' => 'nullable|mimes:pdf|max:5120',
+                'url' => 'nullable',
             ]);
 
             // Handle file upload
@@ -120,6 +121,7 @@ class ProjectController extends Controller
             'entrepreneur_id' => 'required',
             'capital_required' => 'nullable|numeric|min:0',
             'capital_raised' => 'nullable|numeric|min:0',
+            'url' => 'nullable',
             'status' => 'required|in:Pending,Approved,Issued,At Risk',
             'pitch_deck' => 'nullable|mimes:pdf|max:5120',
             'has_complaint' => 'nullable|boolean',

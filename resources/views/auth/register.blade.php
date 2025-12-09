@@ -86,8 +86,8 @@
                 <small id="referMessage" class="mb-2"></small>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-users"></i></span>
-                    <input type="text" id="refer_by" name="refer_by" value="{{ $_GET['refer_id'] ?? 'caplix' }}"
-                        class="form-control" placeholder="Enter referral code">
+                    <input type="text" id="refer_by" name="refer_by" value="{{ $_GET['refer_id'] ?? '' }}"
+                        class="form-control" placeholder="caplix">
                 </div>
                 @error('refer_by')
                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -161,7 +161,7 @@
                     <select name="role" class="form-select" required>
                         <option value="">-- Select Account Type --</option>
                         <option value="investor" {{ old('role') == 'investor' ? 'selected' : '' }}>
-                            Investor - I want to invest money
+                            Earn - I want to earn money
                         </option>
                         <option value="entrepreneur" {{ old('role') == 'entrepreneur' ? 'selected' : '' }}>
                             Entrepreneur - I need capital

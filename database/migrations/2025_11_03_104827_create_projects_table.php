@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Project title
+            $table->string('url')->nullable(); // Project Url
             $table->enum('investment_type', ['short', 'regular', 'fdi'])->nullable();
             $table->tinyInteger('short_duration')->nullable(); // Duration in months (for short-term)
             $table->tinyInteger('regular_duration')->nullable(); // Duration in years (for short-term)

@@ -80,6 +80,12 @@
                                         <p><strong>Investors:</strong> {{ rand(10, 30) }}</p>
                                         <p><strong>Rating:</strong> ⭐ 4.8/5 ({{ rand(8, 20) }} Reviews)</p>
                                         <p><strong>Favorites:</strong> {{ rand(100, 200) }} Investors</p>
+                                        <p>
+                                            <strong>Project Link:</strong>
+                                            <a href="{{ $project->url }}" target="_blank" class="btn btn-success"> 
+                                                {{ $project->url }}
+                                            </a>
+                                        </p>
 
                                         <div class="d-flex mt-3">
                                             <button class="btn btn-danger me-2"><i class="bi bi-heart"></i>
