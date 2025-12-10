@@ -5,7 +5,9 @@
                  &copy; {{ date('Y') }} CapliX Entrepreneur Dashboard
              </div>
              <div class="col-md-6 text-center text-md-end">
-                 Developed by Nazrul Islam Suzon
+                 <a href="https://febulait.com" target="_blank" class="text-decoration-none">
+                     Developed by Febula IT
+                 </a>
              </div>
          </div>
      </div>

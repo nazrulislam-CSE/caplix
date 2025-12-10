@@ -19,6 +19,12 @@ class InvestmentController extends Controller
     {
         $pageTitle = 'My Investment Portfolio';
         
+        $user = Auth::user();
+        if (!$user->hasVerifiedInvestorKyc()) {
+            return redirect()->route('investor.kyc.status')
+                ->with('error', 'KYC verification required to view investment details.');
+        }
+        
         // Get current investor's investments with project details
         $investments = Investment::with('project')
             ->where('user_id', Auth::id())

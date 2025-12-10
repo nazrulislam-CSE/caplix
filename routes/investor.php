@@ -6,6 +6,7 @@ use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\Investor\InvestorProfileController;
 use App\Http\Controllers\Investor\Project\ProjectController;
 use App\Http\Controllers\Investor\Investment\InvestmentController;
+use App\Http\Controllers\Investor\Kyc\KycController;
 
 Route::prefix('investor')->name('investor.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -29,6 +30,17 @@ Route::prefix('investor')->name('investor.')->group(function () {
             Route::post('/', [InvestmentController::class, 'store'])->name('store');
             Route::post('/{investment}/add', [InvestmentController::class, 'addMoreInvestment'])->name('add.more');
             Route::get('/{investment}', [InvestmentController::class, 'show'])->name('show');
+        });
+
+        // ✅ Kyc Routes
+        Route::prefix('kyc')->name('kyc.')->group(function () {
+            Route::get('/', [KycController::class, 'create'])->name('create');
+            Route::post('/', [KycController::class, 'store'])->name('store');
+            Route::get('/status', [KycController::class, 'status'])->name('status');
+            Route::get('/preview', [KycController::class, 'preview'])->name('preview');
+            Route::post('/send-otp', [KycController::class, 'sendOtp'])->name('send-otp');
+            Route::post('/verify-otp', [KycController::class, 'verifyOtp'])->name('verify-otp');
+            Route::get('/download/{field}/{id}', [KycController::class, 'downloadDocument'])->name('download');
         });
 
 

@@ -9,6 +9,7 @@ use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\InvestorKyc;
 
 class InvestorController extends Controller
 {
@@ -74,6 +75,16 @@ class InvestorController extends Controller
             ->latest()
             ->take(5)
             ->get();
+            
+        $user = Auth::user();
+        // Get investor stats
+        $kycStatus = $this->getKycStatus($user);
+        $stats = $this->getDashboardStats($user);
+
+        $hasKyc = $user->hasInvestorKyc();
+        
+        // Get recent activities
+        $recentActivities = $this->getRecentActivities($user);
 
         return view('investor.dashboard', compact(
             'pageTitle',
@@ -88,7 +99,12 @@ class InvestorController extends Controller
             'activeProjects',
             // 'verifiedEntrepreneurs',
             // 'kycPending',
-            'recentInvestments'
+            'recentInvestments',
+            'user',
+            'kycStatus',
+            'stats',
+            'recentActivities',
+            'hasKyc',
         ));
     }
 
@@ -100,5 +116,140 @@ class InvestorController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login')->with('success','Investor logout Successfully');
+    }
+
+      private function getKycStatus($user)
+    {
+        if (!$user->hasInvestorKyc()) {
+            return [
+                'status' => 'not_submitted',
+                'message' => 'Please complete your KYC verification to start investing.',
+                'badge' => 'secondary',
+                'icon' => 'fas fa-exclamation-circle',
+                'action' => 'Submit KYC',
+                'route' => route('investor.kyc.create')
+            ];
+        }
+        
+        $kyc = $user->investorKyc;
+        
+        switch ($kyc->status) {
+            case 'draft':
+                return [
+                    'status' => 'draft',
+                    'message' => 'Your KYC is saved as draft. Complete and submit for verification.',
+                    'badge' => 'warning',
+                    'icon' => 'fas fa-save',
+                    'action' => 'Complete KYC',
+                    'route' => route('investor.kyc.create')
+                ];
+                
+            case 'pending':
+            case 'under_review':
+                return [
+                    'status' => 'under_review',
+                    'message' => 'Your KYC is under review. We\'ll notify you once verified.',
+                    'badge' => 'info',
+                    'icon' => 'fas fa-search',
+                    'action' => 'View Status',
+                    'route' => route('investor.kyc.status')
+                ];
+                
+            case 'verified':
+                return [
+                    'status' => 'verified',
+                    'message' => 'Your KYC is verified. You can start investing now.',
+                    'badge' => 'success',
+                    'icon' => 'fas fa-check-circle',
+                    'action' => 'Start Investing',
+                    'route' => route('investor.project.analysis')
+                ];
+                
+            case 'rejected':
+                return [
+                    'status' => 'rejected',
+                    'message' => 'Your KYC was rejected. Please resubmit with corrections.',
+                    'badge' => 'danger',
+                    'icon' => 'fas fa-times-circle',
+                    'action' => 'Resubmit KYC',
+                    'route' => route('investor.kyc.create')
+                ];
+                
+            default:
+                return [
+                    'status' => 'unknown',
+                    'message' => 'KYC status unknown.',
+                    'badge' => 'secondary',
+                    'icon' => 'fas fa-question-circle',
+                    'action' => 'Check Status',
+                    'route' => route('investor.kyc.status')
+                ];
+        }
+    }
+    
+    private function getDashboardStats($user)
+    {
+        return [
+            'total_investment' => [
+                'title' => 'Total Investment',
+                'value' => '৳0.00',
+                'icon' => 'fas fa-money-bill-wave',
+                'color' => 'primary',
+                'trend' => null
+            ],
+            'active_investments' => [
+                'title' => 'Active Investments',
+                'value' => '0',
+                'icon' => 'fas fa-chart-line',
+                'color' => 'success',
+                'trend' => null
+            ],
+            'total_returns' => [
+                'title' => 'Total Returns',
+                'value' => '৳0.00',
+                'icon' => 'fas fa-coins',
+                'color' => 'warning',
+                'trend' => null
+            ],
+            'kyc_status' => [
+                'title' => 'KYC Status',
+                'value' => $user->hasVerifiedInvestorKyc() ? 'Verified' : 'Pending',
+                'icon' => 'fas fa-user-check',
+                'color' => $user->hasVerifiedInvestorKyc() ? 'success' : 'warning',
+                'trend' => null
+            ]
+        ];
+    }
+    
+    private function getRecentActivities($user)
+    {
+        $activities = [];
+        
+        if ($user->hasInvestorKyc()) {
+            $kyc = $user->investorKyc;
+            $activities[] = [
+                'time' => $kyc->updated_at,
+                'title' => 'KYC Status Updated',
+                'description' => 'Your KYC status is now ' . ucfirst($kyc->status),
+                'icon' => 'fas fa-user-check',
+                'color' => $kyc->status === 'verified' ? 'success' : 'info'
+            ];
+        }
+        
+        // Add more activities as needed
+        $activities[] = [
+            'time' => $user->created_at,
+            'title' => 'Account Created',
+            'description' => 'Welcome to CapliX Investor Platform',
+            'icon' => 'fas fa-user-plus',
+            'color' => 'primary'
+        ];
+        
+        // Sort by time desc
+        usort($activities, function($a, $b) {
+            return $b['time'] <=> $a['time'];
+        });
+        
+        return array_slice($activities, 0, 5);
     }
 }

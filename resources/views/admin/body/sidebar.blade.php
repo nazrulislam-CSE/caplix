@@ -30,7 +30,8 @@
      <a href="{{ route('admin.dashboard') }}"><i class="fa-solid fa-chart-simple me-2"></i> Overview Details</a>
 
      <!-- KYC Verification List  -->
-     <a href="{{ route('admin.kyc.index') }}"><i class="fa-solid fa-shield-halved me-2"></i> KYC Verification List</a>
+    <a href="{{ route('admin.kyc.index') }}"><i class="fa-solid fa-shield-halved me-2"></i> Entrepreneur KYC Verification List</a>
+    <a href="{{ route('admin.investor-kyc.index') }}"><i class="fa-solid fa-shield-halved me-2"></i> Investor KYC Verification List</a>
 
      <!-- Investor submenu -->
      <div class="has-submenu">

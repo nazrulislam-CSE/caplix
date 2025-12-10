@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\Kyc\kycController;
+use App\Http\Controllers\Admin\Kyc\InvestorKycController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -40,6 +41,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{kyc}', [KycController::class, 'destroy'])->name('destroy');
             Route::get('/{kyc}/{documentType}', [KycController::class, 'downloadDocument'])->name('download');
             Route::get('/export', [KycController::class, 'export'])->name('export');
+        });
+
+        Route::prefix('investor-kyc')->name('investor-kyc.')->group(function () {
+            Route::get('/', [InvestorKycController::class, 'index'])->name('index');
+            Route::get('/{id}', [InvestorKycController::class, 'show'])->name('show');
+            Route::put('/{id}/status', [InvestorKycController::class, 'updateStatus'])->name('update-status');
+            Route::get('/download/{id}/{field}', [InvestorKycController::class, 'downloadDocument'])->name('download');
+            Route::delete('/{id}', [InvestorKycController::class, 'destroy'])->name('destroy');
+            Route::put('/{id}/notes', [InvestorKycController::class, 'updateNotes'])->name('update-notes');
+            Route::get('/{id}/edit', [InvestorKycController::class, 'edit'])->name('edit');
+            Route::put('/{id}/update', [InvestorKycController::class, 'update'])->name('update');
         });
        
     });

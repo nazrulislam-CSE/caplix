@@ -31,7 +31,7 @@
 
        <!-- Investment submenu -->
        {{-- In your layout file --}}
-       <a href="#"><i class="fa-solid fa-shield-halved me-2"></i> KYC Verification</a>
+       <a href="{{ route('investor.kyc.create') }}"><i class="fa-solid fa-shield-halved me-2"></i> KYC Verification</a>
        <!-- Investment submenu -->
        <div class="has-submenu {{ $investmentMenuOpen }}">
            <a href="#"><i class="fa-solid fa-briefcase me-2"></i> Investments </a>

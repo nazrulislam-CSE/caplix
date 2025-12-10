@@ -53,4 +53,34 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'refer_by');
     }
+
+    // Relations
+    public function investorKyc()
+    {
+        return $this->hasOne(InvestorKyc::class);
+    }
+
+      public function businessKyc()
+    {
+        return $this->hasOne(BusinessKyc::class);
+    }
+
+    // Methods
+    public function hasInvestorKyc()
+    {
+        return !is_null($this->investorKyc);
+    }
+
+    public function hasVerifiedInvestorKyc()
+    {
+        return $this->hasInvestorKyc() && $this->investorKyc->isVerified();
+    }
+
+    public function getKycStatus()
+    {
+        if ($this->hasInvestorKyc()) {
+            return $this->investorKyc->status;
+        }
+        return 'no_kyc';
+    }
 }
