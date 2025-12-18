@@ -83,4 +83,44 @@ class User extends Authenticatable
         }
         return 'no_kyc';
     }
+
+     /**
+     * Get all deposits for the user.
+     */
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    /**
+     * Get pending deposits for the user.
+     */
+    public function pendingDeposits()
+    {
+        return $this->deposits()->where('status', 'pending');
+    }
+
+    /**
+     * Get approved deposits for the user.
+     */
+    public function approvedDeposits()
+    {
+        return $this->deposits()->where('status', 'approved');
+    }
+
+    /**
+     * Get total deposited amount.
+     */
+    public function getTotalDepositedAttribute()
+    {
+        return $this->deposits()->where('status', 'approved')->sum('amount');
+    }
+
+    /**
+     * Get total pending deposit amount.
+     */
+    public function getTotalPendingDepositAttribute()
+    {
+        return $this->deposits()->where('status', 'pending')->sum('amount');
+    }
 }

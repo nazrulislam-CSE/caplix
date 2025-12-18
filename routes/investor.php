@@ -8,6 +8,7 @@ use App\Http\Controllers\Investor\Project\ProjectController;
 use App\Http\Controllers\Investor\Investment\InvestmentController;
 use App\Http\Controllers\Investor\Kyc\KycController;
 use App\Http\Controllers\Investor\Refer\ReferController;
+use App\Http\Controllers\Investor\Deposit\DepositController;
 
 Route::prefix('investor')->name('investor.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -47,6 +48,13 @@ Route::prefix('investor')->name('investor.')->group(function () {
         // ✅ Refer Routes
         Route::prefix('refer')->name('refer.')->group(function () {
             Route::get('/', [ReferController::class, 'index'])->name('index');
+        });
+        
+        // ✅ Deposit Routes
+        Route::prefix('deposit')->name('deposit.')->group(function () {
+            Route::get('/', [DepositController::class, 'index'])->name('index');
+            Route::get('/create', [DepositController::class, 'create'])->name('create');
+            Route::post('/store', [DepositController::class, 'store'])->name('store');
         });
 
 
