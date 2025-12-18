@@ -7,6 +7,7 @@ use App\Http\Controllers\Investor\InvestorProfileController;
 use App\Http\Controllers\Investor\Project\ProjectController;
 use App\Http\Controllers\Investor\Investment\InvestmentController;
 use App\Http\Controllers\Investor\Kyc\KycController;
+use App\Http\Controllers\Investor\Refer\ReferController;
 
 Route::prefix('investor')->name('investor.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -41,6 +42,11 @@ Route::prefix('investor')->name('investor.')->group(function () {
             Route::post('/send-otp', [KycController::class, 'sendOtp'])->name('send-otp');
             Route::post('/verify-otp', [KycController::class, 'verifyOtp'])->name('verify-otp');
             Route::get('/download/{field}/{id}', [KycController::class, 'downloadDocument'])->name('download');
+        });
+
+        // ✅ Refer Routes
+        Route::prefix('refer')->name('refer.')->group(function () {
+            Route::get('/', [ReferController::class, 'index'])->name('index');
         });
 
 

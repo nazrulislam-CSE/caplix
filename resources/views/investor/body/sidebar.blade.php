@@ -46,6 +46,8 @@
 
        <a href="{{ route('investor.project.analysis') }}"><i class="fa-solid fa-coins me-2"></i> Project Analysis</a>
 
+       <a href="{{ route('investor.refer.index') }}"><i class="fa-solid fa-coins me-2"></i> Refer, Rank & Rewards</a>
+
        <!-- Remaining menu items (placeholders) -->
        <a href="#"><i class="fa-solid fa-coins me-2"></i> Withdrawal Requests</a>
        <a href="#"><i class="fa-solid fa-file-lines me-2"></i> Reports & Audit</a>
