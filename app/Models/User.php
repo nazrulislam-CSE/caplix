@@ -54,6 +54,25 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'refer_by');
     }
 
+    // Users I have referred
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'refer_by');
+    }
+
+    // The user who referred me
+    public function referredBy()
+    {
+        return $this->belongsTo(User::class, 'refer_by');
+    }
+
+    // The user income
+    public function incomes()
+    {
+        return $this->hasMany(Income::class);
+    }
+
+
     // Relations
     public function investorKyc()
     {
@@ -123,4 +142,40 @@ class User extends Authenticatable
     {
         return $this->deposits()->where('status', 'pending')->sum('amount');
     }
+
+    public function totalIncome()
+    {
+        return $this->incomes()->sum('amount');
+    }
+
+    public function rank()
+    {
+        $income = $this->totalIncome();
+
+        $ranks = collect(config('ranks'))
+            ->sortByDesc('min');
+
+        foreach ($ranks as $rank) {
+            if ($income >= $rank['min']) {
+                return $rank['name'];
+            }
+        }
+
+        return 'Bronze';
+    }
+    
+    public function rankIcon()
+    {
+        $rank = $this->rank();
+
+        return match($rank) {
+            'Bronze' => 'fa-bronze fa-medal',    // example, replace with FA icon
+            'Silver' => 'fa-solid fa-medal text-secondary',
+            'Gold' => 'fa-solid fa-star text-warning',
+            'Platinum' => 'fa-solid fa-gem text-primary',
+            'Diamond' => 'fa-solid fa-gem text-info',
+            default => 'fa-solid fa-star',
+        };
+    }
+
 }

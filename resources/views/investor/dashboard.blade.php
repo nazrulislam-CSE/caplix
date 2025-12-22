@@ -166,7 +166,62 @@
                 @endif
             </div>
         </div>
+
+        <!-- Financial data with icons -->
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body d-flex align-items-center">
+                        <i class="fa-solid fa-wallet fa-2x text-primary me-3"></i>
+                        <div>
+                            <h5 class="fw-bold mb-0">৳ {{ number_format($financials['balance'], 2) }}</h5>
+                            <p class="text-muted mb-0">Wallet Balance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body d-flex align-items-center">
+                        <i class="fa-solid fa-coins fa-2x text-success me-3"></i>
+                        <div>
+                            <h5 class="fw-bold mb-0">৳ {{ number_format($financials['total_earnings'], 2) }}</h5>
+                            <p class="text-muted mb-0">Total Earnings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body d-flex align-items-center">
+                        <i class="fa-solid fa-user-plus fa-2x text-warning me-3"></i>
+                        <div>
+                            <h5 class="fw-bold mb-0">৳ {{ number_format($financials['referral_earnings'], 2) }}</h5>
+                            <p class="text-muted mb-0">Referral Earnings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body d-flex align-items-center">
+                        <i class="fa-solid fa-gift fa-2x text-info me-3"></i>
+                        <div>
+                            <h5 class="fw-bold mb-0">৳ {{ number_format($financials['deposit_bonus_earned'], 2) }}</h5>
+                            <p class="text-muted mb-0">Deposit Bonuses</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
+
 
     <!-- Additional Investor Stats -->
     <div class="row g-3 mb-4">

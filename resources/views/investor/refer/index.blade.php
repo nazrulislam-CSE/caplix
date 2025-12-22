@@ -19,7 +19,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h3 class="fw-bold">0</h3>
+                    <h3 class="fw-bold">৳ {{ number_format($rewardBalance, 2) }}</h3>
                     <p class="text-muted mb-0">Reward Balance</p>
                 </div>
             </div>
@@ -28,7 +28,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h3 class="fw-bold">0</h3>
+                    <h3 class="fw-bold">৳ {{ number_format($user->referral_earnings, 2) }}</h3>
                     <p class="text-muted mb-0">Referral Income</p>
                 </div>
             </div>
@@ -37,7 +37,9 @@
         <div class="col-md-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h3 class="fw-bold">Gold</h3>
+                    <h3 class="fw-bold">
+                        <i class="fa-solid {{ auth()->user()->rankIcon() }} me-2" style="font-size:24px;"></i> {{ $currentRank }}
+                    </h3>
                     <p class="text-muted mb-0">Current Rank</p>
                 </div>
             </div>
@@ -114,6 +116,48 @@
                                 <strong>৳500 bonus</strong>.
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Referral List  -->
+    <div class="row g-4 mt-1">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Your Referrals ({{ $referrals->count() }})</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Sl</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Joined At</th>
+                                    <th>Referral Income</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($referrals as $key => $referral)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $referral->name }}</td>
+                                        <td>{{ $referral->email }}</td>
+                                        <td>{{ $referral->created_at->format('d M Y') }}</td>
+                                        <td>৳ {{ $referral->incomes->where('type','referral_bonus')->sum('amount') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">No referrals yet.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-center mt-4">
+                        {{ $referrals->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </div>

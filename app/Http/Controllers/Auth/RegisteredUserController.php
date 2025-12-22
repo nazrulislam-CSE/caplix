@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Income;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,11 +35,17 @@ class RegisteredUserController extends Controller
     {
         try {
 
-            if (empty($request->refer_by)) {
-                return redirect()->back()->withInput()->with('error', 'Please provide a Refer Username!');
-            }
+            // if (empty($request->refer_by)) {
+            //     return redirect()->back()->withInput()->with('error', 'Please provide a Refer Username!');
+            // }
 
-            $referUser = User::where('username', $request->refer_by)->first();
+            // Default refer username
+            $defaultReferUsername = 'caplix';
+
+            // If refer_by is provided, use it; otherwise use default
+            $referUsername = $request->refer_by ?: $defaultReferUsername;
+
+            $referUser = User::where('username', $referUsername)->first();
 
             if (!$referUser) {
               return redirect()->back()->withInput()->with('error', 'Please provide a Refer Username!');
@@ -67,6 +74,19 @@ class RegisteredUserController extends Controller
                 'phone' => $request->phone,
                 'refer_by' => $refer_id,
             ]);
+
+            // ✅ Referral bonus add (50 taka)
+            Income::create([
+                'user_id' => $referUser->id,
+                'amount' => 50,
+                'type' => 'referral_bonus',
+                'description' => 'Referral bonus for '.$referUser->username,
+            ]);
+
+            // Update referrer balance
+            if (isset($referUser->balance)) {
+                $referUser->increment('balance', 50);
+            }
 
             event(new Registered($user));
 

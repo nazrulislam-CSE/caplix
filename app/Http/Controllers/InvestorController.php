@@ -86,6 +86,21 @@ class InvestorController extends Controller
         // Get recent activities
         $recentActivities = $this->getRecentActivities($user);
 
+        // Financial data
+        $financials = [
+            'balance' => $user->balance,
+            'total_earnings' => $user->total_earnings,
+            'total_withdrawn' => $user->total_withdrawn,
+            'pending_balance' => $user->pending_balance,
+            'investment_balance' => $user->investment_balance,
+            'referral_earnings' => $user->referral_earnings,
+            'deposit_bonus_earned' => $user->deposit_bonus_earned,
+            'withdrawable_balance' => $user->withdrawable_balance,
+            'locked_balance' => $user->locked_balance,
+            'total_penalties' => $user->total_penalties,
+            'total_interest_earned' => $user->total_interest_earned,
+        ];
+
         return view('investor.dashboard', compact(
             'pageTitle',
             'projects',
@@ -105,6 +120,7 @@ class InvestorController extends Controller
             'stats',
             'recentActivities',
             'hasKyc',
+            'financials',
         ));
     }
 

@@ -109,11 +109,13 @@ class InvestmentController extends Controller
             'investment_amount' => 'required|numeric|min:1000',
             'type' => 'required|in:short-term,regular,fixed-deposit,long-term',
         ]);
+        
 
         try {
             DB::beginTransaction();
 
             $project = Project::approved()->findOrFail($request->project_id);
+            
 
             // Check minimum investment (using capital_required as reference)
             $minInvestment = 1000; // Default minimum
@@ -126,10 +128,20 @@ class InvestmentController extends Controller
             // Check if project can accept this investment
             $remainingCapital = $project->remaining_capital;
             if ($request->investment_amount > $remainingCapital) {
-                return back()->withErrors([
-                    'investment_amount' => "Maximum investment for this project is $" . number_format($remainingCapital)
-                ])->withInput();
+                return back()->with('error', "Maximum investment for this project is ৳" . number_format($remainingCapital));
             }
+
+            $user = Auth::user();
+
+            // Check if user has enough balance
+            if ($user->balance < $request->investment_amount) {
+                return back()->with('error', 'Insufficient balance for this investment!');
+            }
+
+            // Deduct from user wallet
+            $user->decrement('balance', $request->investment_amount);
+            $user->increment('investment_balance', $request->investment_amount);
+            
 
             // Create investment
             $investment = Investment::create([
@@ -176,7 +188,6 @@ class InvestmentController extends Controller
      */
     public function addMoreInvestment(Request $request, Investment $investment)
     {
-        // Authorization check
         if ($investment->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -188,23 +199,31 @@ class InvestmentController extends Controller
         try {
             DB::beginTransaction();
 
+            $user = Auth::user();
             $additionalAmount = $request->additional_amount;
-            
+
+            // Check user balance
+            if ($user->balance < $additionalAmount) {
+                return back()->with('error', 'Insufficient balance for additional investment!');
+            }
+
             // Check if project can accept additional investment
             $project = $investment->project;
             $remainingCapital = $project->remaining_capital;
-            
+
             if ($additionalAmount > $remainingCapital) {
                 return back()->withErrors([
-                    'additional_amount' => "Maximum additional investment for this project is $" . number_format($remainingCapital)
+                    'additional_amount' => "Maximum additional investment for this project is ৳" . number_format($remainingCapital)
                 ])->withInput();
             }
 
-            $newTotal = $investment->investment_amount + $additionalAmount;
+            // Deduct from user balance
+            $user->decrement('balance', $additionalAmount);
+            $user->increment('investment_balance', $additionalAmount);
 
             // Update investment
             $investment->update([
-                'investment_amount' => $newTotal,
+                'investment_amount' => $investment->investment_amount + $additionalAmount,
                 'current_value' => $investment->current_value + $additionalAmount,
             ]);
 
@@ -217,10 +236,10 @@ class InvestmentController extends Controller
             // Create transaction record
             InvestmentTransaction::create([
                 'investment_id' => $investment->id,
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,
                 'transaction_type' => 'additional_investment',
                 'amount' => $additionalAmount,
-                'balance_after' => $newTotal,
+                'balance_after' => $user->balance,
                 'reference_id' => (new InvestmentTransaction())->generateReferenceId(),
                 'status' => 'completed',
                 'notes' => 'Additional investment added',
@@ -237,4 +256,5 @@ class InvestmentController extends Controller
             return back()->with('error', 'Failed to add additional investment: ' . $e->getMessage());
         }
     }
+
 }
