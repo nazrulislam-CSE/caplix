@@ -13,7 +13,6 @@
             </ol>
         </nav>
     </div>
-
     <!-- Top Cards -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
@@ -38,7 +37,8 @@
             <div class="card shadow-sm border-0">
                 <div class="card-body">
                     <h3 class="fw-bold">
-                        <i class="fa-solid {{ auth()->user()->rankIcon() }} me-2" style="font-size:24px;"></i> {{ $currentRank }}
+                        <i class="fa-solid {{ auth()->user()->rankIcon() }} me-2" style="font-size:24px;"></i>
+                        {{ $currentRank }}
                     </h3>
                     <p class="text-muted mb-0">Current Rank</p>
                 </div>
@@ -92,7 +92,6 @@
         </div>
 
 
-        <!-- Challenges & Bonuses -->
         <div class="col-md-5">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body d-flex flex-column justify-content-between">
@@ -101,7 +100,10 @@
 
                         <div class="mb-3">
                             <strong>Daily Check-in Bonus</strong>
-                            <button class="btn btn-sm btn-primary float-end">Claim</button>
+                            <button class="btn btn-sm btn-primary float-end" data-bs-toggle="modal"
+                                data-bs-target="#claimBonusModal">
+                                Claim
+                            </button>
                         </div>
 
                         <p class="mb-2">
@@ -120,6 +122,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Claim Bonus Modal -->
+        <div class="modal fade" id="claimBonusModal" tabindex="-1" aria-labelledby="claimBonusModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('investor.bonus.claim') }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="claimBonusModalLabel">Claim Referral Bonus</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to claim your <strong>৳50 Referral Bonus</strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Claim</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
     <!-- Referral List  -->
     <div class="row g-4 mt-1">
@@ -127,8 +153,8 @@
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <h5 class="fw-bold mb-3">Your Referrals ({{ $referrals->count() }})</h5>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover align-middle">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
                             <thead>
                                 <tr>
                                     <th>Sl</th>
@@ -145,7 +171,10 @@
                                         <td>{{ $referral->name }}</td>
                                         <td>{{ $referral->email }}</td>
                                         <td>{{ $referral->created_at->format('d M Y') }}</td>
-                                        <td>৳ {{ $referral->incomes->where('type','referral_bonus')->sum('amount') }}</td>
+                                        <td>৳
+                                            {{ \App\Models\Income::where('type', 'referral_bonus')->where('user_id', Auth::id())->sum('amount') }}
+                                        </td>
+
                                     </tr>
                                 @empty
                                     <tr>

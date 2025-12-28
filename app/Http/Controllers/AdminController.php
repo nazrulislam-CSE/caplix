@@ -69,7 +69,21 @@ class AdminController extends Controller
         }
 
         $projects = Project::latest()->paginate(10); 
-        return view('admin.dashboard',compact('pageTitle','projects'));
+
+        // Dashboard cards data
+        $totalInvestors = 0;
+        $totalInvestment = 0;
+        $activeInvestments = 0;
+        $completedInvestments = 0;
+
+        foreach ($projects as $project) {
+            $totalInvestors += $project->investments->count();
+            $totalInvestment += $project->investments->sum('investment_amount');
+            $activeInvestments += $project->investments->where('status', 'active')->count();
+            $completedInvestments += $project->investments->where('status', 'completed')->count();
+        }
+
+        return view('admin.dashboard',compact('pageTitle','projects',  'totalInvestors','totalInvestment','activeInvestments','completedInvestments'));
     }
 
     public function AdminDestroy(Request $request){

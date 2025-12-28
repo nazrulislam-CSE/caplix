@@ -83,8 +83,9 @@
                                 <tr>
                                     <th>Pitch Deck</th>
                                     <td>
-                                        @if($project->pitch_deck)
-                                            <a href="{{ asset('storage/' . $project->pitch_deck) }}" target="_blank" class="btn btn-sm btn-primary">
+                                        @if ($project->pitch_deck)
+                                            <a href="{{ asset('storage/' . $project->pitch_deck) }}" target="_blank"
+                                                class="btn btn-sm btn-primary">
                                                 <i class="fas fa-file-pdf"></i> View PDF
                                             </a>
                                         @else
@@ -92,6 +93,80 @@
                                         @endif
                                     </td>
                                 </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row mb-4">
+
+                            <!-- Total Investors Card -->
+                            <div class="col-md-4 col-sm-6 mb-3  mt-3">
+                                <div class="card shadow border-0">
+                                    <div class="card-body d-flex align-items-center">
+                                        <div class="me-3">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                                style="width:50px; height:50px;">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1">Total Investors</h6>
+                                            <h4 class="mb-0">{{ $totalInvestors }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Total Investment Amount Card -->
+                            <div class="col-md-4 col-sm-6 mb-3  mt-3">
+                                <div class="card shadow border-0">
+                                    <div class="card-body d-flex align-items-center">
+                                        <div class="me-3">
+                                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center"
+                                                style="width:50px; height:50px;">
+                                                <i class="fas fa-coins"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1">Total Investment</h6>
+                                            <h4 class="mb-0">
+                                                ৳ {{ number_format($totalInvestment, 2) }} 
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <h4 class="mt-4">Investors List</h4>
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sl</th>
+                                    <th>Investor Name</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Investment Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($project->investments as $investment)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $investment->user->name }}</td>
+                                        <td>৳ {{ number_format($investment->investment_amount, 2) }}</td>
+                                        <td>
+                                            <span class="badge bg-warning text-dark">{{ $investment->status }}</span>
+                                        </td>
+                                        <td>{{ $investment->investment_date->format('d M Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">No investments yet</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
 

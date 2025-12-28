@@ -9,18 +9,44 @@ use App\Models\Project;
 
 class EntrepreneurController extends Controller
 {
-    public function EntrepreneurDashboard(){
-        // KYC status check
+   public function EntrepreneurDashboard()
+    {
         $user = Auth::user();
+
+        // KYC status
         $kyc = BusinessKyc::where('user_id', $user->id)->first();
         $isKycVerified = $kyc && $kyc->status === 'verified';
-        
 
         $pageTitle = 'Entrepreneur Dashboard';
-        $projects = Project::where('entrepreneur_id', Auth::id())->latest()->paginate(10); 
-        
-        return view('entrepreneur.dashboard',compact('pageTitle','projects','isKycVerified','kyc',));
+
+        // Projects paginate
+        $projects = Project::where('entrepreneur_id', $user->id)->latest()->paginate(10);
+
+        // Dashboard cards data
+        $totalInvestors = 0;
+        $totalInvestment = 0;
+        $activeInvestments = 0;
+        $completedInvestments = 0;
+
+        foreach ($projects as $project) {
+            $totalInvestors += $project->investments->unique('user_id')->count();
+            $totalInvestment += $project->investments->sum('investment_amount');
+            $activeInvestments += $project->investments->where('status', 'active')->count();
+            $completedInvestments += $project->investments->where('status', 'completed')->count();
+        }
+
+        return view('entrepreneur.dashboard', compact(
+            'pageTitle',
+            'projects',
+            'isKycVerified',
+            'kyc',
+            'totalInvestors',
+            'totalInvestment',
+            'activeInvestments',
+            'completedInvestments'
+        ));
     }
+
 
     public function EntrepreneurDestroy(Request $request){
 

@@ -93,7 +93,18 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $pageTitle = 'Project Details';
-        return view('admin.project.show', compact('project', 'pageTitle'));
+
+        // Project investments with investor info
+        $project->load(['investments.user']);
+
+        // Total investment amount
+        $totalInvestment = $project->investments->sum('investment_amount');
+
+        // Total investors count
+        $totalInvestors = $project->investments->count();
+
+        return view('admin.project.show', compact('project', 'pageTitle',  'totalInvestment',
+            'totalInvestors'));
     }
 
     /**

@@ -15,10 +15,19 @@
 
     <!-- Dashboard Stats -->
     <div class="row g-3 mb-4">
+       <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-primary">{{ $totalInvestors ?? 0 }}</h5>
+                <small>Total Investors</small>
+                <div class="mt-2 text-primary">
+                    <i class="fas fa-user-group"></i>
+                </div>
+            </div>
+        </div>
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
-                <h5 class="text-primary">125</h5>
-                <small>Total Investors</small>
+                <h5 class="text-primary">৳ {{ number_format($totalInvestment ?? 0, 2) }} </h5>
+                <small>Total Investment</small>
                 <div class="mt-2 text-primary">
                     <i class="fas fa-user-group"></i>
                 </div>

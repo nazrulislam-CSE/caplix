@@ -45,8 +45,17 @@
         @endif
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
-                <h5 class="text-primary">125</h5>
+                <h5 class="text-primary">{{ $totalInvestors ?? 0 }}</h5>
                 <small>Total Investors</small>
+                <div class="mt-2 text-primary">
+                    <i class="fas fa-user-group"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-primary">৳ {{ number_format($totalInvestment ?? 0, 2) }} </h5>
+                <small>Total Investment</small>
                 <div class="mt-2 text-primary">
                     <i class="fas fa-user-group"></i>
                 </div>
@@ -158,15 +167,23 @@
                             <tr>
                                 <th>Project</th>
                                 <th>Capital</th>
+                                <th>Investors</th>
+                                <th>Invest Amount</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($projects as $project)
+                                @php
+                                    $totalInvestors = $project->investments->unique('user_id')->count();
+                                    $totalInvestment = $project->investments->sum('investment_amount');
+                                @endphp
                                 <tr>
                                     <td>{{ $project->name }}</td>
                                     <td>৳{{ number_format($project->capital_required, 2) }}</td>
+                                    <td>{{ $totalInvestors }}</td>
+                                    <td>৳{{ number_format($totalInvestment, 2) }}</td>
                                     <td>
                                         @if ($project->status === 'Pending')
                                             <span class="badge bg-warning text-dark">Pending</span>
@@ -187,7 +204,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">No projects found.</td>
+                                    <td colspan="6" class="text-center">No projects found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -200,7 +217,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Charts Section -->

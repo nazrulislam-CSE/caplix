@@ -60,7 +60,7 @@ class RegisteredUserController extends Controller
                 'username' => ['required', 'string', 'max:255', 'unique:users,username'],
                 'password' => ['required', 'confirmed', Password::defaults()],
                 'role' => ['required', 'in:investor,entrepreneur'],
-                'phone' => ['required', 'digits:11'],
+                'phone' => ['required', 'digits:11', 'unique:users,phone'],
             ]);
 
             // Create user
@@ -76,17 +76,17 @@ class RegisteredUserController extends Controller
             ]);
 
             // ✅ Referral bonus add (50 taka)
-            Income::create([
-                'user_id' => $referUser->id,
-                'amount' => 50,
-                'type' => 'referral_bonus',
-                'description' => 'Referral bonus for '.$referUser->username,
-            ]);
+            // Income::create([
+            //     'user_id' => $referUser->id,
+            //     'amount' => 50,
+            //     'type' => 'referral_bonus',
+            //     'description' => 'Referral bonus for '.$referUser->username,
+            // ]);
 
             // Update referrer balance
-            if (isset($referUser->balance)) {
-                $referUser->increment('balance', 50);
-            }
+            // if (isset($referUser->balance)) {
+            //     $referUser->increment('balance', 50);
+            // }
 
             event(new Registered($user));
 

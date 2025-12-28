@@ -187,7 +187,7 @@
                                             <div class="row">
                                                 <!-- Project Information -->
                                                 <div class="col-md-6">
-                                                    <div class="card border-0 shadow-sm mb-4">
+                                                    <div class="card border-0 shadow mb-4">
                                                         <div class="card-header bg-light">
                                                             <h6 class="mb-0"><i class="fa-solid fa-building me-2"></i>Project Information</h6>
                                                         </div>
@@ -232,8 +232,8 @@
                                                 </div>
 
                                                 <!-- Investment Performance -->
-                                                <div class="col-md-6">
-                                                    <div class="card border-0 shadow-sm mb-4">
+                                                <div class="col-md-6 mt-3">
+                                                    <div class="card border-0 shadow mb-4">
                                                         <div class="card-header bg-light">
                                                             <h6 class="mb-0"><i class="fa-solid fa-chart-bar me-2"></i>Investment Performance
                                                             </h6>

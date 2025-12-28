@@ -9,6 +9,7 @@ use App\Http\Controllers\Investor\Investment\InvestmentController;
 use App\Http\Controllers\Investor\Kyc\KycController;
 use App\Http\Controllers\Investor\Refer\ReferController;
 use App\Http\Controllers\Investor\Deposit\DepositController;
+use App\Http\Controllers\Investor\Claim\BonusController;
 
 Route::prefix('investor')->name('investor.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -56,6 +57,10 @@ Route::prefix('investor')->name('investor.')->group(function () {
             Route::get('/create', [DepositController::class, 'create'])->name('create');
             Route::post('/store', [DepositController::class, 'store'])->name('store');
         });
+
+        // claim bonus
+        Route::post('/bonus/claim', [BonusController::class, 'claimReferralBonus'])->name('bonus.claim');
+
 
 
     });

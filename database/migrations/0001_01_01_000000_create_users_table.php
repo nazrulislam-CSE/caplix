@@ -42,7 +42,7 @@ return new class extends Migration
             $table->decimal('total_commission', 15, 2)->default(0);
 
             // 🔹 Personal info
-            $table->string('phone')->nullable();
+            $table->string('phone')->unique()->nullable();
             $table->string('address')->nullable();
             $table->string('photo')->nullable();
             $table->string('text')->nullable();

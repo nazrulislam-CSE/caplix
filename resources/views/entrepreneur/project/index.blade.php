@@ -34,13 +34,17 @@
                                         <th>Status</th>
                                         <th>Capital Required</th>
                                         <th>Investors</th>
-                                        <th>Complaints</th>
+                                        <th>Invest Amount</th>
                                         <th>Created By</th>
                                         {{-- <th>Actions</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($projects as $project)
+                                    @php
+                                        $totalInvestors = $project->investments->unique('user_id')->count();
+                                        $totalInvestment = $project->investments->sum('investment_amount');
+                                    @endphp
                                         <tr @if ($project->is_red) style="color:red;" @endif>
                                             <td>{{ $loop->iteration + ($projects->currentPage() - 1) * $projects->perPage() }}
                                             </td>
@@ -59,8 +63,8 @@
                                                 @endif
                                             </td>
                                             <td>৳{{ number_format($project->capital_required, 2) }}</td>
-                                            <td>{{ $project->investors_count ?? 0 }}</td>
-                                            <td>{{ $project->complaints_count ?? 0 }}</td>
+                                            <td>{{ $totalInvestors ?? 0 }}</td>
+                                            <td>৳ {{ number_format($totalInvestment ?? 0, 2) }} </td>
                                             <td>{{ $project->user->name ?? '' }}</td>
                                             {{-- <td>
                                                 <a href="{{ route('entrepreneur.project.show', $project->id) }}"

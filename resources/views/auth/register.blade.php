@@ -87,7 +87,7 @@
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-users"></i></span>
                     <input type="text" id="refer_by" name="refer_by" value="{{ $_GET['refer_id'] ?? '' }}"
-                        class="form-control" placeholder="caplix">
+                        class="form-control" placeholder="caplix"  {{ isset($_GET['refer_id']) ? 'readonly' : '' }}>
                 </div>
                 @error('refer_by')
                     <div class="text-danger small mt-1">{{ $message }}</div>
