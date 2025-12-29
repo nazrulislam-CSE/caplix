@@ -51,7 +51,7 @@
      
      <!-- Remaining menu items (placeholders) -->
      <a href="#"><i class="fa-solid fa-coins me-2"></i> Withdrawal Requests</a>
-     <a href="#"><i class="fa-solid fa-file-lines me-2"></i> Reports & Audit</a>
+     <a href="{{ route('entrepreneur.project.profit.report.index') }}" class="{{ Route::is('entrepreneur.project.profit.report.index') ? 'active' : '' }}"><i class="fa-solid fa-file-lines me-2"></i> Reports & Audit</a>
      <a href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
      <a href="#"><i class="fa-solid fa-credit-card me-2"></i> Payments</a>
      <a href="#"><i class="fa-solid fa-wallet me-2"></i> Wallet</a>

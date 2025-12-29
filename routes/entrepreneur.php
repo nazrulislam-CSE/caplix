@@ -6,6 +6,7 @@ use App\Http\Controllers\EntrepreneurController;
 use App\Http\Controllers\Entrepreneur\EntrepreneurProfileController;
 use App\Http\Controllers\Entrepreneur\Kyc\kycController;
 use App\Http\Controllers\Entrepreneur\Project\ProjectController;
+use App\Http\Controllers\Entrepreneur\Project\ProfitReportController;
 
 Route::prefix('entrepreneur')->name('entrepreneur.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -38,6 +39,13 @@ Route::prefix('entrepreneur')->name('entrepreneur.')->group(function () {
             Route::delete('/delete/{id}', [kycController::class, 'destroy'])->name('destroy');
             Route::post('/send-otp', [KycController::class, 'sendOtp'])->name('send-otp');
             Route::get('/status', [KycController::class, 'status'])->name('status');
+        });
+
+        // ✅ Project Profit Report Routes
+        Route::prefix('project/profit/report')->name('project.profit.report.')->group(function () {
+            Route::get('/', [ProfitReportController::class, 'index'])->name('index');
+            Route::get('/create', [ProfitReportController::class, 'create'])->name('create');
+            Route::post('/store', [ProfitReportController::class, 'store'])->name('store');
         });
     });
 });
