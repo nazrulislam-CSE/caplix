@@ -19,14 +19,13 @@
         }
 
         .login-card {
-            max-width: 400px;
+            max-width: 450px;
             margin: auto;
             margin-top: auto;
             margin-bottom: auto;
             padding: 30px;
             border-radius: 12px;
             background: #ffffff;
-            /* white card */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
@@ -49,6 +48,18 @@
         a.text-dark:hover {
             text-decoration: underline;
         }
+        
+        .login-method-toggle {
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .login-method-toggle.active {
+            background-color: #198754;
+            color: white;
+        }
     </style>
 </head>
 
@@ -57,17 +68,44 @@
         <div class="card login-card">
             <h3 class="text-center mb-3">Welcome Back</h3>
             <p class="text-center text-muted">Access your CapliX dashboard</p>
-            <form method="POST" action="{{ route('login') }}">
+            
+            <!-- Login Method Toggle -->
+            <div class="d-flex justify-content-center mb-3">
+                <div class="btn-group" role="group" aria-label="Login method">
+                    <button type="button" class="btn login-method-toggle active" id="emailLoginBtn" data-method="email">
+                        <i class="fas fa-envelope me-2"></i>Email
+                    </button>
+                    <button type="button" class="btn login-method-toggle" id="phoneLoginBtn" data-method="phone">
+                        <i class="fas fa-phone me-2"></i>Phone
+                    </button>
+                </div>
+            </div>
+            
+            <form method="POST" action="{{ route('login') }}" id="loginForm">
                 @csrf
-                <!-- Email -->
-                <div class="mb-3">
+                
+                <!-- Email Field -->
+                <div class="mb-3 email-field">
                     <label class="form-label">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                               placeholder="Enter email" value="{{ old('email') }}" required>
+                               placeholder="Enter email" value="{{ old('email') }}" id="emailInput">
                     </div>
                     @error('email')
+                        <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <!-- Phone Field (Hidden by default) -->
+                <div class="mb-3 phone-field" style="display: none;">
+                    <label class="form-label">Phone Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror"
+                               placeholder="Enter phone number" value="{{ old('phone') }}" id="phoneInput">
+                    </div>
+                    @error('phone')
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror
                 </div>
@@ -90,8 +128,7 @@
 
                 <!-- Login Buttons -->
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Login as Investor</button>
-                    <button type="submit" class="btn btn-success">Login asEntrepreneur</button>
+                    <button type="submit" class="btn btn-success">Login</button>
                 </div>
 
                 <div class="text-center mt-3">
@@ -112,6 +149,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+        // Password toggle
         const togglePassword = document.getElementById('togglePassword');
         const password = document.getElementById('password');
 
@@ -120,6 +158,56 @@
             password.setAttribute('type', type);
             togglePassword.classList.toggle('fa-eye-slash');
         });
+
+        // Login method toggle
+        const emailLoginBtn = document.getElementById('emailLoginBtn');
+        const phoneLoginBtn = document.getElementById('phoneLoginBtn');
+        const emailField = document.querySelector('.email-field');
+        const phoneField = document.querySelector('.phone-field');
+        const emailInput = document.getElementById('emailInput');
+        const phoneInput = document.getElementById('phoneInput');
+        const loginForm = document.getElementById('loginForm');
+
+        emailLoginBtn.addEventListener('click', () => {
+            emailLoginBtn.classList.add('active');
+            phoneLoginBtn.classList.remove('active');
+            emailField.style.display = 'block';
+            phoneField.style.display = 'none';
+            emailInput.setAttribute('required', 'required');
+            phoneInput.removeAttribute('required');
+            // Clear phone value when switching to email
+            phoneInput.value = '';
+        });
+
+        phoneLoginBtn.addEventListener('click', () => {
+            phoneLoginBtn.classList.add('active');
+            emailLoginBtn.classList.remove('active');
+            phoneField.style.display = 'block';
+            emailField.style.display = 'none';
+            phoneInput.setAttribute('required', 'required');
+            emailInput.removeAttribute('required');
+            // Clear email value when switching to phone
+            emailInput.value = '';
+        });
+
+        // Form submission handling
+        loginForm.addEventListener('submit', function(e) {
+            if (emailField.style.display !== 'none') {
+                // If email field is visible, remove phone field from form data
+                phoneInput.removeAttribute('name');
+            } else {
+                // If phone field is visible, remove email field from form data
+                emailInput.removeAttribute('name');
+            }
+        });
+
+        // Set initial state based on previous errors
+        @if(old('phone'))
+            emailLoginBtn.classList.remove('active');
+            phoneLoginBtn.classList.add('active');
+            emailField.style.display = 'none';
+            phoneField.style.display = 'block';
+        @endif
 
         // Toastr messages (session)
         @if(session('success'))
@@ -137,5 +225,4 @@
         @endif
     </script>
 </body>
-
 </html>

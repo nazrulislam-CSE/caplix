@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -42,6 +41,14 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
+        // Check if user exists
+        if (!$user) {
+            Auth::logout();
+            return back()->withErrors([
+                $request->filled('email') ? 'email' : 'phone' => 'The provided credentials do not match our records.',
+            ]);
+        }
+
         if ($user->role === 'admin') {
             Auth::logout(); 
             $request->session()->invalidate();
@@ -59,7 +66,6 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('entrepreneur.dashboard', absolute: false));
         }
     }
-
 
     /**
      * Destroy an authenticated session.

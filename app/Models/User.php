@@ -178,4 +178,14 @@ class User extends Authenticatable
         };
     }
 
+     /**
+     * Find user by email or phone
+     */
+    public function findForPassport($identifier)
+    {
+        return $this->orWhere('email', $identifier)
+                    ->orWhere('phone', $identifier)
+                    ->first();
+    }
+
 }
