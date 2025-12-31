@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <h1>{{ $pageTitle }}</h1>
     <!-- Breadcrumb -->
     <div class="breadcrumb-header d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0">Dashboard</h4>
@@ -15,11 +14,29 @@
 
     <!-- Dashboard Stats -->
     <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-success">{{ $totalInvestors ?? 0 }}</h5>
+                <small>Total Entrepreneurs</small>
+                <div class="mt-2 text-success">
+                    <i class="fas fa-user-group"></i>
+                </div>
+            </div>
+        </div>
        <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
                 <h5 class="text-primary">{{ $totalInvestors ?? 0 }}</h5>
                 <small>Total Investors</small>
                 <div class="mt-2 text-primary">
+                    <i class="fas fa-user-group"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-danger">৳ {{ number_format($totalDeposit ?? 0, 2) }} </h5>
+                <small>Total Deposit</small>
+                <div class="mt-2 text-danger">
                     <i class="fas fa-user-group"></i>
                 </div>
             </div>
@@ -35,25 +52,16 @@
         </div>
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
-                <h5 class="text-success">32</h5>
-                <small>Active Projects</small>
-                <div class="mt-2 text-success">
-                    <i class="fas fa-rocket"></i>
+                <h5 class="text-warning">৳0.00 </h5>
+                <small>Total Withdraw</small>
+                <div class="mt-2 text-warning">
+                    <i class="fas fa-user-group"></i>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
-                <h5 class="text-info">৳45,200</h5>
-                <small>Monthly Profit</small>
-                <div class="mt-2 text-info">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="stat-card">
-                <h5 class="text-warning">8</h5>
+                <h5 class="text-warning">0</h5>
                 <small>Pending Withdrawals</small>
                 <div class="mt-2 text-warning">
                     <i class="fas fa-clock"></i>
@@ -62,18 +70,54 @@
         </div>
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
-                <h5 class="text-purple">58</h5>
+                <h5 class="text-success">{{ $activeProjectCount ?? '0' }}</h5>
+                <small>Total Active Projects</small>
+                <div class="mt-2 text-success">
+                    <i class="fas fa-rocket"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-info">৳0.00</h5>
+                <small>Monthly Profit</small>
+                <div class="mt-2 text-info">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-primary">{{ $verifiedEntrepreneurs ?? '0' }}</h5>
                 <small>Verified Entrepreneurs</small>
-                <div class="mt-2 text-purple">
+                <div class="mt-2 text-primary">
                     <i class="fas fa-badge-check"></i>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-card">
-                <h5 class="text-danger">12</h5>
+                <h5 class="text-primary">{{ $kycPending ?? '0' }}</h5>
                 <small>KYC Pending</small>
-                <div class="mt-2 text-danger">
+                <div class="mt-2 text-primary">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-success">{{ $verifiedInvestor ?? '0' }}</h5>
+                <small>Verified Investor</small>
+                <div class="mt-2 text-success">
+                    <i class="fas fa-badge-check"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+                <h5 class="text-success">{{ $kycPendingInvestor ?? '0' }}</h5>
+                <small>KYC Pending</small>
+                <div class="mt-2 text-success">
                     <i class="fas fa-user-clock"></i>
                 </div>
             </div>

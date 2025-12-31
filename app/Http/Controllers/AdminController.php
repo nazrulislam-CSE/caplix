@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Models\Project;
+use App\Models\Deposit;
+use App\Models\BusinessKyc;
+use App\Models\InvestorKyc;
 
 class AdminController extends Controller
 {
@@ -69,6 +72,12 @@ class AdminController extends Controller
         }
 
         $projects = Project::latest()->paginate(10); 
+        $activeProjectCount = Project::where('status', 'approved')->count();
+        $totalDeposit = Deposit::where('status', 'approved')->sum('amount');
+        $verifiedEntrepreneurs = BusinessKyc::where('status', 'verified')->count();
+        $kycPending = BusinessKyc::where('status', 'pending')->count();
+        $verifiedInvestor = InvestorKyc::where('status', 'verified')->count();
+        $kycPendingInvestor = InvestorKyc::where('status', 'pending')->count();
 
         // Dashboard cards data
         $totalInvestors = 0;
@@ -83,7 +92,7 @@ class AdminController extends Controller
             $completedInvestments += $project->investments->where('status', 'completed')->count();
         }
 
-        return view('admin.dashboard',compact('pageTitle','projects',  'totalInvestors','totalInvestment','activeInvestments','completedInvestments'));
+        return view('admin.dashboard',compact('pageTitle','projects',  'totalInvestors','totalInvestment','activeInvestments','completedInvestments','activeProjectCount','totalDeposit','verifiedEntrepreneurs','kycPending','verifiedInvestor','kycPendingInvestor'));
     }
 
     public function AdminDestroy(Request $request){
