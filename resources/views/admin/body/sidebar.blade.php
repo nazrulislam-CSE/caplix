@@ -33,6 +33,7 @@
     <a href="{{ route('admin.kyc.index') }}"><i class="fa-solid fa-shield-halved me-2"></i> Entrepreneur KYC Verification List</a>
     <a href="{{ route('admin.investor-kyc.index') }}"><i class="fa-solid fa-shield-halved me-2"></i> Investor KYC Verification List</a>
     <a href="{{ route('admin.deposit.index') }}"><i class="fa-solid fa-shield-halved me-2"></i> Investor Deposit List</a>
+    <a href="{{ route('admin.user.index') }}"><i class="fa-solid fa-users me-2"></i> User List</a>
 
      <!-- Investor submenu -->
      <div class="has-submenu">

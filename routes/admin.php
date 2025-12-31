@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Kyc\kycController;
 use App\Http\Controllers\Admin\Kyc\InvestorKycController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\Admin\Deposit\DepositController;
+use App\Http\Controllers\Admin\User\UserController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
@@ -61,6 +62,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}', [DepositController::class, 'show'])->name('show');
             Route::post('/{id}', [DepositController::class, 'update'])->name('update');
             Route::post('/bulk-update', [DepositController::class, 'bulkUpdate'])->name('bulk.update');
+        });
+
+        // ✅ User Routes
+        Route::prefix('user')->name('user.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/users/{user}', [UserController::class, 'show'])->name('show');
+            Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('/users/{user}', [UserController::class, 'update'])->name('update');
+            Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('destroy');
         });
        
     });
