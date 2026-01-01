@@ -10,6 +10,7 @@ use App\Http\Controllers\Investor\Kyc\KycController;
 use App\Http\Controllers\Investor\Refer\ReferController;
 use App\Http\Controllers\Investor\Deposit\DepositController;
 use App\Http\Controllers\Investor\Claim\BonusController;
+use App\Http\Controllers\Investor\Withdraw\WithdrawController;
 
 Route::prefix('investor')->name('investor.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -60,6 +61,12 @@ Route::prefix('investor')->name('investor.')->group(function () {
 
         // claim bonus
         Route::post('/bonus/claim', [BonusController::class, 'claimReferralBonus'])->name('bonus.claim');
+
+        // ✅ Withdraw Routes
+        Route::prefix('withdraw')->name('withdraw.')->group(function () {
+            Route::get('/', [WithdrawController::class, 'index'])->name('request');
+            Route::post('/store', [WithdrawController::class, 'store'])->name('store');
+        });
 
 
 
